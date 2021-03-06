@@ -1,0 +1,25 @@
+.project_root,
+.project_navbar {
+  height: 100%;
+  display: flex;
+}
+
+.project_navbar {
+  width: 304px;
+  border-right: 1px solid var(--axisPrimary);
+  position: fixed;
+  top: 48px;
+  left: 0;
+
+  &-hide {
+    width: 48px;
+  }
+}
+
+.project_main {
+  flex-grow: 1;
+}
+
+.project_content {
+  margin-left: 304px;
+}

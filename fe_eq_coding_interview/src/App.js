@@ -1,26 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getEHourly, getEDaily } from './store/events';
-import { getSHourly, getSDaily } from './store/stats';
-import { getPoi } from './store/poi';
 
-import './App.css';
+import Dashboard from './containers/Dashboard';
 
 function App() {
-  const checkEHourly = useSelector((state) => console.log(state));
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getEHourly());
-    dispatch(getEDaily());
-    dispatch(getPoi());
-    dispatch(getSHourly());
-    dispatch(getSDaily());
-  }, [dispatch]);
+  // console.log(Object.keys(checkEHourly.eventSlice).length);
 
   return (
     <div className='App'>
-      <h1>hello</h1>
+      <Dashboard />
     </div>
   );
 }

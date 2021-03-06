@@ -13,7 +13,10 @@ export const getEDaily = createAsyncThunk('/events/daily', () => {
 
 const eventSlice = createSlice({
   name: 'events',
-  initialState: { eHourlyApi: [], eDailyApi: [] },
+  initialState: {
+    eHourlyApi: [],
+    eDailyApi: [],
+  },
   extraReducers: {
     [getEHourly.fulfilled]: (state, action) => {
       state.eHourlyApi = action.payload;
