@@ -15,8 +15,6 @@ const queryHandler = (req, res, next) => {
     .catch(next);
 };
 
-app.use('/src', express.static('src'));
-
 app.get('/', (req, res) => {
   res.send('Welcome to EQ Works 22223😎');
 });

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getEHourly } from './store/events';
+import { getEHourly, getEDaily } from './store/events';
+import { getSHourly, getSDaily } from './store/stats';
+import { getPoi } from './store/poi';
+
 import './App.css';
 
 function App() {
@@ -9,6 +12,10 @@ function App() {
 
   useEffect(() => {
     dispatch(getEHourly());
+    dispatch(getEDaily());
+    dispatch(getPoi());
+    dispatch(getSHourly());
+    dispatch(getSDaily());
   }, [dispatch]);
 
   return (

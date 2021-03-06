@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-import eHourlySlice from './events';
-
+import eventSlice from './events';
+import statsSlice from './stats';
+import poiSlice from './poi';
 const reducer = combineReducers({
-  eHourlySlice,
+  eventSlice,
+  statsSlice,
+  poiSlice,
 });
 
 const store = configureStore({
