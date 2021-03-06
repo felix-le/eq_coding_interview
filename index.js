@@ -1,6 +1,6 @@
 const express = require('express');
 const pg = require('pg');
-
+require('dotenv').config();
 const app = express();
 // configs come from standard PostgreSQL env vars
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
@@ -14,6 +14,8 @@ const queryHandler = (req, res, next) => {
     })
     .catch(next);
 };
+
+app.use('/src', express.static('src'));
 
 app.get('/', (req, res) => {
   res.send('Welcome to EQ Works 22223😎');
