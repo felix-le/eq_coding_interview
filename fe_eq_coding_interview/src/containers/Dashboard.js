@@ -28,17 +28,17 @@ const Dashboard = () => {
     dispatch(getSDaily());
   }, [dispatch]);
 
-  const headerApi = [
-    {
-      title: 'eventSlice',
-    },
-    {
-      title: 'poiSlice',
-    },
-    {
-      title: 'statsSlice',
-    },
-  ];
+  // const headerApi = [
+  //   {
+  //     title: 'eventSlice',
+  //   },
+  //   {
+  //     title: 'poiSlice',
+  //   },
+  //   {
+  //     title: 'statsSlice',
+  //   },
+  // ];
 
   return (
     <>

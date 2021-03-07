@@ -13,15 +13,15 @@ import ChartStackedArea from './ChartStackedArea';
 const ReactGridLayout = WidthProvider(RGL);
 
 const DefaultPage = ({ addons, boardData }) => {
+  console.log(
+    '🚀 ~ file: GridLayout.js ~ line 16 ~ DefaultPage ~ boardData',
+    boardData
+  );
   const isExpandDrawer = useSelector(isExpandDrawerSelector);
-  // const boardData = useSelector(boardEHourlyDataSelector);
   const dispatch = useDispatch();
 
   const [layouts, setLayouts] = useState([]);
-  console.log(
-    '🚀 ~ file: GridLayout.js ~ line 21 ~ DefaultPage ~ layouts',
-    layouts
-  );
+
   const [defaultLayouts, setDefaultLayouts] = useState([]);
   const [gridItem, setGridItem] = useState({
     isFullScreen: false,
