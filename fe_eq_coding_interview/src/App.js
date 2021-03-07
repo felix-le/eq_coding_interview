@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
 import Dashboard from './containers/Dashboard';
 
 function App() {

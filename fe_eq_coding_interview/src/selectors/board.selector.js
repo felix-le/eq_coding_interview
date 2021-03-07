@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const boardEHourlyDataSelector = createSelector(
-  (state) => state.eHourlyApi,
-  (eHourlyApi) => eHourlyApi.boardData
+export const addonSelector = createSelector(
+  (state) => state.boardSlice,
+  (boardSlice) => boardSlice.addon
 );

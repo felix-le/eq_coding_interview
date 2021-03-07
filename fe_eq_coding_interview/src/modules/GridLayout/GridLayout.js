@@ -3,24 +3,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import '@carbon/charts/styles.css';
 import RGL, { WidthProvider } from 'react-grid-layout';
-
+import { isExpandDrawerSelector } from '../../selectors/app.selector';
 // carbon core
 import Close20 from '@carbon/icons-react/lib/close/20';
 import { OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
 
 import ChartStackedArea from './ChartStackedArea';
 
-import { boardEHourlyDataSelector } from '../../selectors/board.selector';
-import { isExpandDrawerSelector } from '../../selectors/app.selector';
-
 const ReactGridLayout = WidthProvider(RGL);
 
-const DefaultPage = (tableNumber) => {
+const DefaultPage = ({ addons, boardData }) => {
   const isExpandDrawer = useSelector(isExpandDrawerSelector);
-  const boardData = useSelector(boardEHourlyDataSelector);
+  // const boardData = useSelector(boardEHourlyDataSelector);
   const dispatch = useDispatch();
 
   const [layouts, setLayouts] = useState([]);
+  console.log(
+    '🚀 ~ file: GridLayout.js ~ line 21 ~ DefaultPage ~ layouts',
+    layouts
+  );
   const [defaultLayouts, setDefaultLayouts] = useState([]);
   const [gridItem, setGridItem] = useState({
     isFullScreen: false,
@@ -37,57 +38,60 @@ const DefaultPage = (tableNumber) => {
   });
 
   function generateLayout() {
-    const newLayouts = tableNumber.map((item, i) => {
-      let w = 2;
-      let h = 2;
-      let x = 10;
-      let y = Infinity;
+    if (addons && addons.length > 0) {
+      const newLayouts = addons.map((item, i) => {
+        let w = 2;
+        let h = 2;
+        let x = 10;
+        let y = Infinity;
 
-      if (i === 0) {
-        w = 4;
-        h = 3;
-        x = 0;
-        y = 0;
-      }
+        if (i === 0) {
+          w = 4;
+          h = 3;
+          x = 0;
+          y = 0;
+        }
 
-      if (i === 1) {
-        w = 3;
-        h = 3;
-        x = 4;
-        y = 0;
-      }
+        if (i === 1) {
+          w = 3;
+          h = 3;
+          x = 4;
+          y = 0;
+        }
 
-      if (i === 2) {
-        w = 5;
-        h = 3;
-        x = 0;
-        y = 3;
-      }
+        if (i === 2) {
+          w = 5;
+          h = 3;
+          x = 0;
+          y = 3;
+        }
 
-      if (i >= 6) {
-        x = (i - 6 * 2) % defaultProps.cols;
-        w = 2;
-      }
+        if (i >= 6) {
+          x = (i - 6 * 2) % defaultProps.cols;
+          w = 2;
+        }
 
-      return {
-        x,
-        y,
-        w,
-        h,
-        static:
-          defaultProps.length > 0 &&
-          defaultLayouts[i] &&
-          defaultLayouts[i].static,
-        i: item.toString(),
-      };
-    });
-    setLayouts(newLayouts);
-    setDefaultLayouts(newLayouts);
+        return {
+          x,
+          y,
+          w,
+          h,
+          static:
+            defaultProps.length > 0 &&
+            defaultLayouts[i] &&
+            defaultLayouts[i].static,
+          i: item.toString(),
+        };
+      });
+
+      setLayouts(newLayouts);
+      setDefaultLayouts(newLayouts);
+    }
   }
 
   useEffect(() => {
     generateLayout();
-  }, [tableNumber]);
+  }, [addons]);
 
   const _onLayoutChange = (layout) => {
     setLayouts(layout);
@@ -123,15 +127,15 @@ const DefaultPage = (tableNumber) => {
   };
 
   return (
-    <h1> hello</h1>
-    // <ReactGridLayout
-    //   {...defaultProps}
-    //   key={isExpandDrawer}
-    //   layout={layouts}
-    //   onLayoutChange={_onLayoutChange}
-    // >
-    //   {console.log(tableNumber)}
-    // </ReactGridLayout>
+    <>
+      <h1> hello</h1>
+      <ReactGridLayout
+        {...defaultProps}
+        key={isExpandDrawer}
+        layout={layouts}
+        onLayoutChange={_onLayoutChange}
+      ></ReactGridLayout>
+    </>
   );
 };
 

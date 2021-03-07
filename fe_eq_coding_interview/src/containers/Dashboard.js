@@ -4,10 +4,19 @@ import GridLayout from '../modules/GridLayout';
 import { getEHourly, getEDaily } from '../store/events';
 import { getSHourly, getSDaily } from '../store/stats';
 import { getPoi } from '../store/poi';
+import { addonSelector } from '../selectors/board.selector';
 
 const Dashboard = () => {
   const initialState = useSelector((state) => state);
-  const [sumTable, setSumTable] = useState(0);
+
+  const addons = useSelector(addonSelector);
+  const boardData = {
+    1: initialState.eventSlice.eDailyApi,
+    2: initialState.eventSlice.eHourlyApi,
+    3: initialState.poiSlice.poiApi,
+    4: initialState.statsSlice.sHourlyApi,
+    5: initialState.statsSlice.sDailyApi,
+  };
 
   const dispatch = useDispatch();
 
@@ -30,25 +39,11 @@ const Dashboard = () => {
       title: 'statsSlice',
     },
   ];
-  useEffect(() => {
-    checkTable();
-  }, [initialState]);
-
-  const checkTable = () => {
-    let sum = 0;
-    if (initialState) {
-      let arrNum = headerApi.map(
-        (item) => Object.keys(initialState[item.title]).length
-      );
-      sum = arrNum.reduce((a, b) => a + b);
-    }
-    setSumTable(sum);
-  };
 
   return (
     <>
       <h1>hello</h1>
-      {/* <GridLayout tableNumber={sumTable} /> */}
+      <GridLayout addons={addons} boardData={boardData} />
     </>
   );
 };

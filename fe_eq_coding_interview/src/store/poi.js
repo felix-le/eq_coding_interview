@@ -5,7 +5,7 @@ export const getPoi = createAsyncThunk('/poi', async () => {
   return getPoiApi();
 });
 const poiSlice = createSlice({
-  name: 'poi',
+  name: 'poiSlice',
   initialState: { poiApi: [] },
   extraReducers: {
     [getPoi.fulfilled]: (state, action) => {
