@@ -105,6 +105,7 @@ const Dashboard = () => {
   function convertsHourly() {
     let newObj = { ...sHourly };
     let objArr = [];
+
     for (const obj in newObj) {
       const eleArr = {
         ...newObj[obj],
