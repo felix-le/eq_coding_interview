@@ -1,24 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import '@carbon/charts/styles.css';
 import RGL, { WidthProvider } from 'react-grid-layout';
-import { isExpandDrawerSelector } from '../../selectors/app.selector';
 // carbon core
 import Close20 from '@carbon/icons-react/lib/close/20';
 import { OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
-
 import ChartStackedArea from './ChartStackedArea';
 
 const ReactGridLayout = WidthProvider(RGL);
 
 const DefaultPage = ({ addons, boardData }) => {
-  console.log(
-    '🚀 ~ file: GridLayout.js ~ line 16 ~ DefaultPage ~ boardData',
-    boardData
-  );
-  const isExpandDrawer = useSelector(isExpandDrawerSelector);
-  const dispatch = useDispatch();
+  const isExpandDrawer = true;
 
   const [layouts, setLayouts] = useState([]);
 
@@ -134,7 +126,51 @@ const DefaultPage = ({ addons, boardData }) => {
         key={isExpandDrawer}
         layout={layouts}
         onLayoutChange={_onLayoutChange}
-      ></ReactGridLayout>
+      >
+        {layouts.map((item, idx) => {
+          const numberI = Number(item.i);
+          const isFullScreen =
+            gridItem.isFullScreen && gridItem.gridId === numberI;
+
+          return (
+            <ItemStyled key={item.i.toString()} isFullScreen={isFullScreen}>
+              <div className='contentStyled'>
+                {isFullScreen ? (
+                  <div
+                    className='chart_closeIcon'
+                    onClick={_handleFullScreen(numberI)}
+                  >
+                    <Close20 />
+                  </div>
+                ) : (
+                  <div className='chart_overmenu'>
+                    <OverflowMenu flipped>
+                      <SizeStyled
+                        ismaximize={item.w === 12 && item.h === 12 ? 1 : 0}
+                        itemText='Maximize'
+                        onClick={_handleMaximize(layouts, item.i)}
+                      />
+
+                      <OverflowMenuItem
+                        itemText='Full Screen'
+                        onClick={_handleFullScreen(numberI)}
+                      />
+                    </OverflowMenu>
+                  </div>
+                )}
+
+                {boardData[numberI] &&
+                  boardData[numberI].type === 'stackedArea' && (
+                    <ChartStackedArea
+                      data={boardData[numberI].data}
+                      options={boardData[numberI].options}
+                    />
+                  )}
+              </div>
+            </ItemStyled>
+          );
+        })}
+      </ReactGridLayout>
     </>
   );
 };
