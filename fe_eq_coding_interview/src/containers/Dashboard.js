@@ -20,7 +20,7 @@ const headerData = [
   },
   {
     key: 'CTR',
-    header: 'CTR',
+    header: 'CTR (%)',
   },
   {
     key: 'type',
@@ -48,14 +48,22 @@ const headerData = [
   },
   {
     key: 'revenue',
-    header: 'Revenue',
+    header: 'Revenue (1B)',
   },
 ];
 
 const Dashboard = () => {
   const initialState = useSelector((state) => state);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getEHourly());
+    dispatch(getEDaily());
+    dispatch(getPoi());
+    dispatch(getSHourly());
+    dispatch(getSDaily());
+  }, [dispatch]);
 
-  const addons = [1];
+  const addons = [1, 2];
   // const [boardData, setBoardData] = useState([]);
   // Get data - setInitial value
   const pois = initialState.poiSlice.poiApi;
@@ -64,7 +72,16 @@ const Dashboard = () => {
   const eDaily = initialState.eventSlice.eDailyApi;
   const eHourly = initialState.eventSlice.eHourlyApi;
 
-  const [dataRequire2a, setDataRequire2a] = useState({
+  // Data table
+  const [rawDataTable, setRawDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
+  console.log(
+    '🚀 ~ file: Dashboard.js ~ line 78 ~ Dashboard ~ dataTable',
+    dataTable
+  );
+
+  // Data all of board
+  const [dataBoard, setDataBoard] = useState({
     1: {
       data: [],
       options: {
@@ -78,7 +95,10 @@ const Dashboard = () => {
       },
       type: 'stackedArea',
     },
-    2: {},
+    2: {
+      type: 'table',
+      data: dataTable,
+    },
   });
 
   // Requirement 2a
@@ -92,40 +112,16 @@ const Dashboard = () => {
       };
       objArr.push(eleArr);
     }
-    setDataRequire2a({ 1: { ...dataRequire2a[1], data: objArr } });
+    setDataBoard({
+      ...dataBoard,
+      1: { ...dataBoard[1], data: objArr },
+    });
   }
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getEHourly());
-    dispatch(getEDaily());
-    dispatch(getPoi());
-    dispatch(getSHourly());
-    dispatch(getSDaily());
-  }, [dispatch]);
-
   useEffect(() => {
     convertsHourly();
   }, [sHourly]);
 
-  // requirement 2c
-  const [rawDataTable, setRawDataTable] = useState([]);
-
-  const [dataTable, setDataTable] = useState([]);
-  console.log(
-    '🚀 ~ file: Dashboard.js ~ line 114 ~ Dashboard ~ dataTable',
-    dataTable
-  );
-  const [initialData, setInitialData] = useState([]);
-  // Combine to get an array of poi_id
-  function combineArr() {
-    const poiShourly = combineFn(pois, sHourly, 'poi_id');
-    const pShSd = combineFn(poiShourly, sDaily, 'revenue');
-    const pShSdEd = combineFn(pShSd, eDaily, 'date');
-    const final = combineFn(pShSdEd, eHourly, 'events');
-    setRawDataTable(final);
-  }
-
+  // Requirement 2b
   function convertRawDataTable() {
     let dataNew = [];
     if (rawDataTable.length > 0) {
@@ -150,39 +146,40 @@ const Dashboard = () => {
         })
       );
     }
-    setInitialData(dataNew);
-    setDataTable(dataNew);
+    setDataBoard({
+      ...dataBoard,
+      2: { ...dataBoard[2], data: dataNew },
+    });
+    // setDataTable(dataNew);
   }
 
   useEffect(() => {
     convertRawDataTable();
   }, [rawDataTable]);
 
+  // requirement 2c
+
+  // Combine to get an array of poi_id
+  function combineArr() {
+    const poiShourly = combineFn(pois, sHourly, 'poi_id');
+    const pShSd = combineFn(poiShourly, sDaily, 'revenue');
+    const pShSdEd = combineFn(pShSd, eDaily, 'date');
+    const final = combineFn(pShSdEd, eHourly, 'events');
+    setRawDataTable(final);
+  }
+
   useEffect(() => {
     combineArr();
   }, [pois, sHourly, sDaily, eDaily, eHourly]);
-  function clearString(str) {
-    return str.replace(/[^\w]/g, '').toLowerCase().split(',').sort().join(', ');
-  }
 
-  const searchTbFn = (e) => {
-    const { value } = e.target;
-    const dataSearch = dataTable.map((item, i) => {
-      if (clearString(item.name).includes(clearString(value))) {
-        return { ...item, isShowSearch: true };
-      } else {
-        return item;
-      }
-    });
-    setDataTable(dataSearch);
-  };
   return (
     <>
-      {/* <GridLayout addons={addons} boardData={dataRequire2a} /> */}
+      <GridLayout
+        addons={addons}
+        boardData={dataBoard}
+        headerData={headerData}
+      />
       <h1>Hello</h1>
-      {dataTable.length > 0 && (
-        <DataTable rowData={dataTable} headerData={headerData} />
-      )}
     </>
   );
 };
