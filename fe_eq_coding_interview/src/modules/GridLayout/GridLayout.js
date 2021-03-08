@@ -13,7 +13,14 @@ import ChartLine from './ChartLine';
 
 const ReactGridLayout = WidthProvider(RGL);
 
-const DefaultPage = ({ addons, boardData, headerData }) => {
+const DefaultPage = ({
+  addons,
+  boardData,
+  headerData,
+  optionViews,
+  indexSelected,
+  setIndexSelected,
+}) => {
   const isExpandDrawer = true;
 
   const [layouts, setLayouts] = useState([]);
@@ -64,8 +71,8 @@ const DefaultPage = ({ addons, boardData, headerData }) => {
         if (i === 3) {
           w = 10;
           x = 0;
-          h = 5;
-          y = 3;
+          h = 4;
+          y = 0;
         }
 
         if (i >= 6) {
@@ -168,11 +175,27 @@ const DefaultPage = ({ addons, boardData, headerData }) => {
                     </OverflowMenu>
                   </div>
                 )}
+
                 {boardData[numberI] && boardData[numberI].type === 'line' && (
-                  <ChartLine
-                    data={boardData[numberI].data}
-                    options={boardData[numberI].options}
-                  />
+                  <>
+                    <div className='select-container'>
+                      <select
+                        value={optionViews[indexSelected]}
+                        onChange={(e) => setIndexSelected(e.target.value)}
+                        defaultValue={0}
+                      >
+                        {optionViews.map((option, i) => (
+                          <option key={i} value={i}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <ChartLine
+                      data={boardData[numberI].data}
+                      options={boardData[numberI].options}
+                    />
+                  </>
                 )}
                 {boardData[numberI] &&
                   boardData[numberI].type === 'stackedArea' && (

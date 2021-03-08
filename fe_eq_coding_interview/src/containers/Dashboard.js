@@ -51,9 +51,29 @@ const headerData = [
   },
 ];
 
-// const optionView = [
-//   {label: }
-// ]
+const optionViews = [
+  {
+    label: 'CTR (Impressions/clicks)',
+    value: {
+      bottom: { mapsTo: 'impressions', scaleType: 'clicks' },
+      left: { mapsTo: 'clicks', scaleType: 'linear' },
+    },
+  },
+  {
+    label: 'Clicks/revenue (AvgCPC)',
+    value: {
+      bottom: { mapsTo: 'click', scaleType: 'avgCPC' },
+      left: { mapsTo: 'revenue', scaleType: 'linear' },
+    },
+  },
+  {
+    label: 'CTR/Time',
+    value: {
+      bottom: { mapsTo: 'hour', scaleType: 'clicks' },
+      left: { mapsTo: 'CTR', scaleType: 'linear' },
+    },
+  },
+];
 
 const Dashboard = () => {
   const initialState = useSelector((state) => state);
@@ -67,7 +87,12 @@ const Dashboard = () => {
   }, [dispatch]);
 
   const addons = [1, 2, 3];
-  // const [boardData, setBoardData] = useState([]);
+  const [indexSelected, setIndexSelected] = useState(0);
+  console.log(
+    '🚀 ~ file: Dashboard.js ~ line 91 ~ Dashboard ~ indexSelected',
+    indexSelected
+  );
+
   // Get data - setInitial value
   const pois = initialState.poiSlice.poiApi;
   const sHourly = initialState.statsSlice.sHourlyApi;
@@ -96,7 +121,7 @@ const Dashboard = () => {
       options: {
         axes: {
           bottom: { scaleType: 'time', mapsTo: 'date' },
-          left: { stacked: true, mapsTo: 'impressions' },
+          left: { mapsTo: 'impressions' },
           curve: 'curveMonotoneX',
           height: '100%',
           title: 'Stacked area (time series)',
@@ -111,20 +136,19 @@ const Dashboard = () => {
     3: {
       data: [],
       options: {
-        axes: {
-          bottom: { mapsTo: 'impressions', scaleType: 'CTR' },
-          left: { mapsTo: 'clicks', scaleType: 'linear' },
-        },
+        axes: optionViews[indexSelected].value,
         curve: 'curveMonotoneX',
         height: '100%',
         legend: { alignment: 'center', enabled: true },
-        title: 'Optimization rates (overall)',
+        title: optionViews[indexSelected].label,
         tooltip: { enabled: true, showTotal: true },
         color: {
-          scale: { 'Dataset 1': 'blue' },
-          'Dataset 2': '#FF6633',
-          'Dataset 3': '#00CC00',
-          'Dataset 4': '#FFDC00',
+          scale: {
+            'EQ Works': 'blue',
+          },
+          'CN Tower': '#FF6633',
+          'Niagara Falls': '#00CC00',
+          'Vancouver Harbour': '#FFDC00',
         },
       },
       type: 'line',
@@ -140,8 +164,8 @@ const Dashboard = () => {
       const eleArr = {
         ...newObj[obj],
         group: `${newObj[obj].hour}`,
-        impressions: Number(newObj[obj].impressions) + 0,
-        revenue: Number(newObj[obj].revenue) + 0,
+        impressions: Number(newObj[obj].impressions),
+        revenue: Number(newObj[obj].revenue),
       };
       objArr.push(eleArr);
     }
@@ -163,7 +187,7 @@ const Dashboard = () => {
         dataNew.push({
           ...item,
           id: item.poi_id.toString(),
-          date: dayjs(item.date).format('DD/MM/YYYY'),
+          date: dayjs(item.date).format('DD-MM-YYYY'),
           // 1B
           revenue: Number(item.revenue).toFixed(3),
           CTR: ((Number(item.clicks) / Number(item.impressions)) * 100).toFixed(
@@ -192,14 +216,15 @@ const Dashboard = () => {
     convertRawDataTable();
   }, [rawDataTable]);
 
-  // requirement 2c
-
   return (
     <>
       <GridLayout
         addons={addons}
         boardData={dataBoard}
         headerData={headerData}
+        optionViews={optionViews}
+        optSelected={indexSelected}
+        setIndexSelected={setIndexSelected}
       />
     </>
   );
