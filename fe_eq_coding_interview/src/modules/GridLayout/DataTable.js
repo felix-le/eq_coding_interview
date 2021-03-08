@@ -14,25 +14,19 @@ import {
 } from 'carbon-components-react';
 
 const ResultTable = ({ rowData, headerData }) => {
-  const [hightLight, setHightLight] = useState(null);
+  const [highLight, sethighLight] = useState([]);
 
-  function clearString(str) {
-    return str.replace(/[^\w]/g, '').toLowerCase().split(',').sort().join(', ');
-  }
   const fnSearch = (e) => {
-    const { value } = e.target;
-    if (value) {
-      const isMatch = rowData.find((item) =>
-        clearString(item.name).includes(clearString(value))
-      );
-      if (!isMatch) {
-        setHightLight(null);
-        return;
-      }
-      setHightLight(isMatch);
-    } else {
-      setHightLight(null);
+    const keyWord = e.target.value.toLowerCase().trim();
+
+    if (keyWord === '') {
+      sethighLight([]);
+      return;
     }
+    const isMatch = rowData.filter(
+      (item) => item.name.toLowerCase().trim().indexOf(keyWord) !== -1
+    );
+    sethighLight(isMatch);
   };
 
   return (
@@ -60,7 +54,9 @@ const ResultTable = ({ rowData, headerData }) => {
                 <TableRow
                   key={row.id}
                   className={
-                    row.id === (hightLight && hightLight.id) ? 'highlight' : ''
+                    highLight && highLight.some((item) => item.id === row.id)
+                      ? 'highlight'
+                      : ''
                   }
                 >
                   {row.cells.map((cell) => (
