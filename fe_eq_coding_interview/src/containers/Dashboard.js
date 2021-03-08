@@ -7,7 +7,6 @@ import { combineFn } from '../helpers/helpers';
 import '@carbon/charts/styles.css';
 import GridLayout from '../modules/GridLayout';
 import dayjs from 'dayjs';
-import DataTable from '../modules/GridLayout/DataTable';
 
 const headerData = [
   {
@@ -52,6 +51,10 @@ const headerData = [
   },
 ];
 
+// const optionView = [
+//   {label: }
+// ]
+
 const Dashboard = () => {
   const initialState = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -63,24 +66,30 @@ const Dashboard = () => {
     dispatch(getSDaily());
   }, [dispatch]);
 
-  const addons = [1, 2];
+  const addons = [1, 2, 3];
   // const [boardData, setBoardData] = useState([]);
   // Get data - setInitial value
   const pois = initialState.poiSlice.poiApi;
   const sHourly = initialState.statsSlice.sHourlyApi;
+
   const sDaily = initialState.statsSlice.sDailyApi;
   const eDaily = initialState.eventSlice.eDailyApi;
   const eHourly = initialState.eventSlice.eHourlyApi;
+  // Combine to get an array of poi_id
+  function combineArr() {
+    const poiShourly = combineFn(pois, sHourly, 'poi_id');
+    const pShSd = combineFn(poiShourly, sDaily, 'revenue');
+    const pShSdEd = combineFn(pShSd, eDaily, 'date');
+    const final = combineFn(pShSdEd, eHourly, 'events');
+    setRawDataTable(final);
+  }
+
+  useEffect(() => {
+    combineArr();
+  }, [pois, sHourly, sDaily, eDaily, eHourly]);
 
   // Data table
   const [rawDataTable, setRawDataTable] = useState([]);
-  const [dataTable, setDataTable] = useState([]);
-  console.log(
-    '🚀 ~ file: Dashboard.js ~ line 78 ~ Dashboard ~ dataTable',
-    dataTable
-  );
-
-  // Data all of board
   const [dataBoard, setDataBoard] = useState({
     1: {
       data: [],
@@ -97,7 +106,28 @@ const Dashboard = () => {
     },
     2: {
       type: 'table',
-      data: dataTable,
+      data: [],
+    },
+    3: {
+      data: [],
+      options: {
+        axes: {
+          bottom: { mapsTo: 'impressions', scaleType: 'CTR' },
+          left: { mapsTo: 'clicks', scaleType: 'linear' },
+        },
+        curve: 'curveMonotoneX',
+        height: '100%',
+        legend: { alignment: 'center', enabled: true },
+        title: 'Optimization rates (overall)',
+        tooltip: { enabled: true, showTotal: true },
+        color: {
+          scale: { 'Dataset 1': 'blue' },
+          'Dataset 2': '#FF6633',
+          'Dataset 3': '#00CC00',
+          'Dataset 4': '#FFDC00',
+        },
+      },
+      type: 'line',
     },
   });
 
@@ -110,9 +140,12 @@ const Dashboard = () => {
       const eleArr = {
         ...newObj[obj],
         group: `${newObj[obj].hour}`,
+        impressions: Number(newObj[obj].impressions) + 0,
+        revenue: Number(newObj[obj].revenue) + 0,
       };
       objArr.push(eleArr);
     }
+
     setDataBoard({
       ...dataBoard,
       1: { ...dataBoard[1], data: objArr },
@@ -144,14 +177,15 @@ const Dashboard = () => {
             1000
           ).toFixed(2),
           isShowSearch: false,
+          group: item.name,
         })
       );
     }
     setDataBoard({
       ...dataBoard,
       2: { ...dataBoard[2], data: dataNew },
+      3: { ...dataBoard[3], data: dataNew },
     });
-    // setDataTable(dataNew);
   }
 
   useEffect(() => {
@@ -160,19 +194,6 @@ const Dashboard = () => {
 
   // requirement 2c
 
-  // Combine to get an array of poi_id
-  function combineArr() {
-    const poiShourly = combineFn(pois, sHourly, 'poi_id');
-    const pShSd = combineFn(poiShourly, sDaily, 'revenue');
-    const pShSdEd = combineFn(pShSd, eDaily, 'date');
-    const final = combineFn(pShSdEd, eHourly, 'events');
-    setRawDataTable(final);
-  }
-
-  useEffect(() => {
-    combineArr();
-  }, [pois, sHourly, sDaily, eDaily, eHourly]);
-
   return (
     <>
       <GridLayout
@@ -180,7 +201,6 @@ const Dashboard = () => {
         boardData={dataBoard}
         headerData={headerData}
       />
-      <h1>Hello</h1>
     </>
   );
 };

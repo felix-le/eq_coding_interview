@@ -5,15 +5,15 @@ import RGL, { WidthProvider } from 'react-grid-layout';
 // carbon core
 import Close20 from '@carbon/icons-react/lib/close/20';
 import { OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
+
+// Chart
 import ChartStackedArea from './ChartStackedArea';
 import DataTable from './DataTable';
+import ChartLine from './ChartLine';
+
 const ReactGridLayout = WidthProvider(RGL);
 
 const DefaultPage = ({ addons, boardData, headerData }) => {
-  console.log(
-    '🚀 ~ file: GridLayout.js ~ line 13 ~ DefaultPage ~ boardData',
-    boardData
-  );
   const isExpandDrawer = true;
 
   const [layouts, setLayouts] = useState([]);
@@ -56,7 +56,7 @@ const DefaultPage = ({ addons, boardData, headerData }) => {
         }
 
         if (i === 2) {
-          w = 3;
+          w = 12;
           h = 3;
           x = 0;
           y = 3;
@@ -168,7 +168,12 @@ const DefaultPage = ({ addons, boardData, headerData }) => {
                     </OverflowMenu>
                   </div>
                 )}
-
+                {boardData[numberI] && boardData[numberI].type === 'line' && (
+                  <ChartLine
+                    data={boardData[numberI].data}
+                    options={boardData[numberI].options}
+                  />
+                )}
                 {boardData[numberI] &&
                   boardData[numberI].type === 'stackedArea' && (
                     <ChartStackedArea
