@@ -1,8 +1,16 @@
-# EQ mock work
+# A work sample from EQWork for internship position - version 1
 
-1. Run backend
+There are two folders in the repository.
 
-config.env
+1. Backend (with some requirements)
+2. Front-end (built by ReactJS, redux-toolkit, carbon-charts, styles-components .etc.)
+
+## How it work
+
+**cd to folder respectively**
+
+1. Backend
+   1.1 Create a new .env files
 
 ```json
 PGHOST=work-samples-db.cx4wctygygyq.us-east-1.rds.amazonaws.com
@@ -12,17 +20,21 @@ PGUSER=readonly
 PGPASSWORD=w2UIO@#bg532!
 ```
 
+1.2 install and add dotenv library
+
 ```javascript
 // Fix error BE install and paste this code into index.js
 require('dotenv').config();
 ```
+
+1.3 run
 
 ```nodejs
 yarn
 yarn run dev
 ```
 
-2. [Turn off CORS](https://www.moesif.com/blog/technical/cors/Authoritative-Guide-to-CORS-Cross-Origin-Resource-Sharing-for-REST-APIs/)
+2. [Turn on CORS](https://www.moesif.com/blog/technical/cors/Authoritative-Guide-to-CORS-Cross-Origin-Resource-Sharing-for-REST-APIs/)
 
 3. Run FE
 
@@ -30,3 +42,7 @@ yarn run dev
 yarn
 yarn start
 ```
+
+### Issues
+
+Sometimes chart 1 or 3 cannot show

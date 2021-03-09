@@ -86,17 +86,17 @@ const Dashboard = () => {
     dispatch(getSDaily());
   }, [dispatch]);
 
-  const addons = [1, 2, 3];
+  const addons = [1, 2, 3]; // number of chart/table
+  //set number of opt select (2.c)
   const [indexSelected, setIndexSelected] = useState(0);
 
-  // Get data - setInitial value
+  // Get data from API - initial value
   const pois = initialState.poiSlice.poiApi;
   const sHourly = initialState.statsSlice.sHourlyApi;
-
   const sDaily = initialState.statsSlice.sDailyApi;
   const eDaily = initialState.eventSlice.eDailyApi;
   const eHourly = initialState.eventSlice.eHourlyApi;
-  // Combine to get an array of poi_id
+  // Combine to get an array of poi_id - raw data
   function combineArr() {
     const poiShourly = combineFn(pois, sHourly, 'poi_id');
     const pShSd = combineFn(poiShourly, sDaily, 'revenue');
@@ -109,7 +109,7 @@ const Dashboard = () => {
     combineArr();
   }, [pois, sHourly, sDaily, eDaily, eHourly]);
 
-  // Data table
+  // Data table requirement 2b
   const [rawDataTable, setRawDataTable] = useState([]);
   const [dataBoard, setDataBoard] = useState({
     1: {
@@ -212,6 +212,7 @@ const Dashboard = () => {
       3: { ...dataBoard[3], data: dataNew },
     });
   }
+  // Requirement 2c
 
   useEffect(() => {
     dataBoard[3].options.axes = optionViews[indexSelected].value;
