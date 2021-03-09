@@ -88,10 +88,6 @@ const Dashboard = () => {
 
   const addons = [1, 2, 3];
   const [indexSelected, setIndexSelected] = useState(0);
-  console.log(
-    '🚀 ~ file: Dashboard.js ~ line 91 ~ Dashboard ~ indexSelected',
-    indexSelected
-  );
 
   // Get data - setInitial value
   const pois = initialState.poiSlice.poiApi;
@@ -136,11 +132,11 @@ const Dashboard = () => {
     3: {
       data: [],
       options: {
-        axes: optionViews[indexSelected].value,
+        axes: optionViews[0].value,
         curve: 'curveMonotoneX',
         height: '100%',
         legend: { alignment: 'center', enabled: true },
-        title: optionViews[indexSelected].label,
+        title: optionViews[0].label,
         tooltip: { enabled: true, showTotal: true },
         color: {
           scale: {
@@ -190,16 +186,21 @@ const Dashboard = () => {
           date: dayjs(item.date).format('DD-MM-YYYY'),
           // 1B
           revenue: Number(item.revenue).toFixed(3),
-          CTR: ((Number(item.clicks) / Number(item.impressions)) * 100).toFixed(
-            2
+          CTR: Number(
+            Number(
+              (Number(item.clicks) / Number(item.impressions)) * 100
+            ).toFixed(2)
           ),
           status: 'Pause',
           type: 'Display',
-          avgCPC: (Number(item.revenue) / Number(item.clicks)).toFixed(2),
-          avgCPV: (
-            (Number(item.revenue) / Number(item.impressions)) *
-            1000
-          ).toFixed(2),
+          avgCPC: Number(
+            (Number(item.revenue) / Number(item.clicks)).toFixed(2)
+          ),
+          avgCPV: Number(
+            ((Number(item.revenue) / Number(item.impressions)) * 1000).toFixed(
+              2
+            )
+          ),
           isShowSearch: false,
           group: item.name,
         })
@@ -213,6 +214,12 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    dataBoard[3].options.axes = optionViews[indexSelected].value;
+    dataBoard[3].options.title = optionViews[indexSelected].label;
+    setDataBoard({ ...dataBoard });
+  }, [indexSelected]);
+
+  useEffect(() => {
     convertRawDataTable();
   }, [rawDataTable]);
 
@@ -223,7 +230,7 @@ const Dashboard = () => {
         boardData={dataBoard}
         headerData={headerData}
         optionViews={optionViews}
-        optSelected={indexSelected}
+        indexSelected={indexSelected}
         setIndexSelected={setIndexSelected}
       />
     </>

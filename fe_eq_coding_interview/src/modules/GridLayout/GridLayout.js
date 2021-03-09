@@ -137,7 +137,6 @@ const DefaultPage = ({
 
   return (
     <>
-      <h1> hello</h1>
       <ReactGridLayout
         {...defaultProps}
         key={isExpandDrawer}
@@ -180,7 +179,6 @@ const DefaultPage = ({
                   <>
                     <div className='select-container'>
                       <select
-                        value={optionViews[indexSelected]}
                         onChange={(e) => setIndexSelected(e.target.value)}
                         defaultValue={0}
                       >
@@ -192,6 +190,7 @@ const DefaultPage = ({
                       </select>
                     </div>
                     <ChartLine
+                      key={indexSelected}
                       data={boardData[numberI].data}
                       options={boardData[numberI].options}
                     />
