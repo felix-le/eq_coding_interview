@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getEHourly, getEDaily } from '../../store/events';
-import { getSHourly, getSDaily } from '../../store/stats';
-import { getPoi } from '../../store/poi';
+import { getEHourly, getEDaily } from '../src/store/events';
+import { getSHourly, getSDaily } from '../src/store/stats';
+import { getPoi } from '../src/store/poi';
 import dayjs from 'dayjs';
 
 const Dashboard = () => {

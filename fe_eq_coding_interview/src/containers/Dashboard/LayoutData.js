@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import GridLayout from '../../modules/GridLayout';
 import ChartLine from './ChartLine';
+import DataTable from './DataTable';
+import ChartStackedArea from './ChartStackedArea';
+import { OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
+import { ModalWrapper } from 'carbon-components-react';
 const optionViews = [
   {
     label: 'Clicks/revenue (AvgCPC)',
@@ -60,25 +63,20 @@ const headerDataTable = [
     header: 'Revenue (1B)',
   },
 ];
-const addons = [1, 2]; // number of chart/table
 const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
   const [indexSelected, setIndexSelected] = useState(0);
+  const [newTableData, setNewTableData] = useState([]);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const optionCharts = [
-    {
-      axes: {
-        bottom: { scaleType: 'time', mapsTo: 'date' },
-        left: { mapsTo: 'events' },
-      },
-      curve: 'curveMonotoneX',
-      height: '80%',
-      title: 'Number events/days',
+  const optionStackedAreaChart = {
+    axes: {
+      bottom: { scaleType: 'time', mapsTo: 'date' },
+      left: { mapsTo: 'events' },
     },
-    {
-      type: 'table',
-    },
-  ];
-
+    curve: 'curveMonotoneX',
+    height: '80%',
+    title: 'Number events/days',
+  };
   const optionChart3 = {
     axes: optionViews[indexSelected].value,
     curve: 'curveMonotoneX',
@@ -93,45 +91,24 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
       },
     },
   };
-  const [boardData, setboardData] = useState({
-    1: {
-      data: stackedAreaChart,
-      options: optionCharts[0],
-      id: 123,
-      type: 'stackedArea',
-    },
-    2: {
-      type: optionCharts[1].type,
-    },
-  });
-
   useEffect(() => {
-    if (stackedAreaChart.length > 0) {
-      boardData[1].data = stackedAreaChart;
-    }
     if (tableData.length > 0) {
-      boardData[2].data = tableData.map((item) => {
+      let formatDatatable = tableData.map((item) => {
         const newObj = { ...item, id: item.poi_id.toString() };
         return newObj;
       });
+      setNewTableData(formatDatatable);
     }
-    setboardData({ ...boardData });
-  }, [stackedAreaChart, tableData, dataBoard3]);
+  }, [tableData]);
 
-  return (
+  const ChartLineContent = () => (
     <>
-      {tableData.length > 0 && (
-        <GridLayout
-          boardData={boardData}
-          addons={addons}
-          headerData={headerDataTable}
-          optionViews={optionViews}
-          indexSelected={indexSelected}
-          setIndexSelected={setIndexSelected}
-        />
-      )}
+      <ChartLine data={dataBoard3} options={optionChart3} className='mb-5' />
       <div className='select-container'>
-        <select onChange={(e) => setIndexSelected(e.target.value)}>
+        <select
+          className='selected_matrix'
+          onChange={(e) => setIndexSelected(e.target.value)}
+        >
           {optionViews.map((option, i) => (
             <option key={i} value={i}>
               {option.label}
@@ -139,8 +116,39 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
           ))}
         </select>
       </div>
-      <ChartLine data={dataBoard3} options={optionChart3} />
     </>
+  );
+
+  return (
+    <div style={{ marginTop: '200px' }}>
+      <div className='chartStacked_wrapper'>
+        <ChartStackedArea
+          data={stackedAreaChart}
+          options={optionStackedAreaChart}
+        />
+      </div>
+
+      <div className='dataTable_wrapper'>
+        {newTableData.length > 0 && (
+          <DataTable rowData={newTableData} headerData={headerDataTable} />
+        )}
+      </div>
+
+      <div className='opt_chart_wrapper' style={{ position: 'relative' }}>
+        <div className='model__wrapper'>
+          <ModalWrapper
+            buttonTriggerText='Full width'
+            modalHeading='Full-width view'
+            className='modal_fullwidth'
+            size='lg'
+            passiveModal
+          >
+            <ChartLineContent />
+          </ModalWrapper>
+        </div>
+        <ChartLineContent />
+      </div>
+    </div>
   );
 };
 

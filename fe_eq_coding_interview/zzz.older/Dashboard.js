@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getEHourly, getEDaily } from '../store/events';
-import { getSHourly, getSDaily } from '../store/stats';
-import { getPoi } from '../store/poi';
-import { combineFn } from '../helpers';
+import { getEHourly, getEDaily } from '../src/store/events';
+import { getSHourly, getSDaily } from '../src/store/stats';
+import { getPoi } from '../src/store/poi';
+import { combineFn } from '../src/helpers';
 import '@carbon/charts/styles.css';
-import GridLayout from '../modules/GridLayout';
+import GridLayout from '../src/modules/GridLayout';
 import dayjs from 'dayjs';
 
 const headerData = [
