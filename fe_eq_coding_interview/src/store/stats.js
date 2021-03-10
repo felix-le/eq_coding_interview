@@ -31,7 +31,9 @@ const statsSlice = createSlice({
           impressions: Number(item.impressions),
           clicks: Number(item.clicks),
           revenue: Number(Number(item.revenue).toFixed(2)),
+          CTR: (item.clicks / item.impressions) * 100,
         };
+
         return newObj;
       });
     },

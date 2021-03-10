@@ -16,6 +16,10 @@ const mapState = (state) => ({
 
 const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
   const [tableData, setTableData] = useState([]);
+  console.log(
+    '🚀 ~ file: index.js ~ line 19 ~ Dashboard ~ tableData',
+    tableData
+  );
 
   const dispatch = useDispatch();
 
@@ -24,7 +28,19 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
     const pShSd = combineFn(poiShourly, sDaily, 'revenue');
     const pShSdEd = combineFn(pShSd, eDaily, 'date');
     const final = combineFn(pShSdEd, eHourly, 'events');
-    setTableData(final);
+    console.log('🚀 ~ file: index.js ~ line 28 ~ combineArr ~ final', final);
+    const newObj = final.map((item) => {
+      const newObj2 = {
+        ...item,
+        CTR: ((item.clicks / item.impressions) * 100).toFixed(2),
+        status: 'Pause',
+        type: 'Display',
+        avgCPC: (item.revenue / item.clicks).toFixed(2),
+        avgCPV: ((item.revenue / item.impressions) * 1000).toFixed(2),
+      };
+      return newObj2;
+    });
+    setTableData(newObj);
   }
 
   useEffect(() => {

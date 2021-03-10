@@ -4,15 +4,15 @@ const optionViews = [
   {
     label: 'CTR (Clicks/Impressions)',
     value: {
-      bottom: { scaleType: 'clicks', mapsTo: 'impressions' },
-      left: { mapsTo: 'events' },
+      bottom: { mapsTo: 'impressions', scaleType: 'clicks' },
+      left: { mapsTo: 'clicks', scaleType: 'linear' },
     },
   },
   {
     label: 'Clicks/revenue (AvgCPC)',
     value: {
-      bottom: { mapsTo: 'click' },
-      left: { mapsTo: 'revenue' },
+      bottom: { mapsTo: 'click', scaleType: 'avgCPC' },
+      left: { mapsTo: 'revenue', scaleType: 'linear' },
     },
   },
 ];
@@ -59,9 +59,21 @@ const headerDataTable = [
     header: 'Revenue (1B)',
   },
 ];
-const addons = [1, 2, 3]; // number of chart/table
+const addons = [1, 2]; // number of chart/table
 const LayoutData = ({ stackedAreaChart, tableData }) => {
+  // const newTableData =
+  // tableData.data.map((item) => {
+  //   const newObj = {
+  //     ...item,
+  //     CTR: item.clicks / item.impressions,
+  //     status: 'Pause',
+  //     type: 'Display',
+  //   };
+  //   return newObj;
+  // });
+
   const [indexSelected, setIndexSelected] = useState(0);
+
   const optionCharts = [
     {
       axes: {

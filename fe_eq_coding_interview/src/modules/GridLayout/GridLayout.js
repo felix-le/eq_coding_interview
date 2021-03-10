@@ -21,7 +21,6 @@ const DefaultPage = ({
   indexSelected,
   setIndexSelected,
 }) => {
-  console.log('🚀 ~ file: GridLayout.js ~ line 24 ~ boardData', boardData);
   const isExpandDrawer = true;
 
   const [layouts, setLayouts] = useState([]);
@@ -201,7 +200,7 @@ const DefaultPage = ({
                   )}
                 {boardData[numberI] &&
                   boardData[numberI].type === 'stackedArea' && (
-                    <ChartStackedArea
+                    <ChartLine
                       data={boardData[numberI].data}
                       options={boardData[numberI].options}
                     />
