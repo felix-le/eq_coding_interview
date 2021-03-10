@@ -180,7 +180,6 @@ const DefaultPage = ({
                     <div className='select-container'>
                       <select
                         onChange={(e) => setIndexSelected(e.target.value)}
-                        defaultValue={0}
                       >
                         {optionViews.map((option, i) => (
                           <option key={i} value={i}>
