@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import GridLayout from '../../modules/GridLayout';
+import ChartLine from './ChartLine';
 const optionViews = [
   {
     label: 'Clicks/revenue (AvgCPC)',
-    key: 123,
     value: {
       bottom: { mapsTo: 'impressions' },
       left: { mapsTo: 'clicks' },
@@ -11,9 +11,8 @@ const optionViews = [
   },
   {
     label: 'CTR (Clicks/Impressions)',
-    key: 345,
     value: {
-      bottom: { mapsTo: 'click' },
+      bottom: { mapsTo: 'clicks' },
       left: { mapsTo: 'revenue' },
     },
   },
@@ -61,13 +60,9 @@ const headerDataTable = [
     header: 'Revenue (1B)',
   },
 ];
-const addons = [1, 2, 3]; // number of chart/table
+const addons = [1, 2]; // number of chart/table
 const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
   const [indexSelected, setIndexSelected] = useState(0);
-  console.log(
-    '🚀 ~ file: LayoutData.js ~ line 67 ~ LayoutData ~ indexSelected',
-    indexSelected
-  );
 
   const optionCharts = [
     {
@@ -82,21 +77,22 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
     {
       type: 'table',
     },
-    {
-      axes: optionViews[indexSelected].value,
-      curve: 'curveMonotoneX',
-      height: '100%',
-      // title: optionViews[indexSelected].label,
-      color: {
-        scale: {
-          'EQ Works': 'blue',
-          'CN Tower': '#FF6633',
-          'Niagara Falls': '#00CC00',
-          'Vancouver Harbour': '#FFDC00',
-        },
+  ];
+
+  const optionChart3 = {
+    axes: optionViews[indexSelected].value,
+    curve: 'curveMonotoneX',
+    height: '100%',
+    title: optionViews[indexSelected].label,
+    color: {
+      scale: {
+        'EQ Works': 'blue',
+        'CN Tower': '#FF6633',
+        'Niagara Falls': '#00CC00',
+        'Vancouver Harbour': '#FFDC00',
       },
     },
-  ];
+  };
   const [boardData, setboardData] = useState({
     1: {
       data: stackedAreaChart,
@@ -107,16 +103,7 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
     2: {
       type: optionCharts[1].type,
     },
-    3: {
-      data: dataBoard3,
-      options: optionCharts[2],
-      type: 'line',
-    },
   });
-  console.log(
-    '🚀 ~ file: LayoutData.js ~ line 97 ~ LayoutData ~ boardData',
-    boardData
-  );
 
   useEffect(() => {
     if (stackedAreaChart.length > 0) {
@@ -128,20 +115,8 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
         return newObj;
       });
     }
-    if (dataBoard3.length > 0) {
-      boardData[3].data = dataBoard3;
-    }
-
     setboardData({ ...boardData });
   }, [stackedAreaChart, tableData, dataBoard3]);
-
-  useEffect(() => {
-    const newBoardData = { ...boardData };
-
-    boardData['3'].options.axes = optionViews[indexSelected].value;
-
-    setboardData({ ...boardData });
-  }, [indexSelected]);
 
   return (
     <>
@@ -155,6 +130,16 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
           setIndexSelected={setIndexSelected}
         />
       )}
+      <div className='select-container'>
+        <select onChange={(e) => setIndexSelected(e.target.value)}>
+          {optionViews.map((option, i) => (
+            <option key={i} value={i}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <ChartLine data={dataBoard3} options={optionChart3} />
     </>
   );
 };

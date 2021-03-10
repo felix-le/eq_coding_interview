@@ -174,27 +174,6 @@ const DefaultPage = ({
                     </OverflowMenu>
                   </div>
                 )}
-
-                {boardData[numberI] && boardData[numberI].type === 'line' && (
-                  <>
-                    <div className='select-container'>
-                      <select
-                        onChange={(e) => setIndexSelected(e.target.value)}
-                      >
-                        {optionViews.map((option, i) => (
-                          <option key={i} value={i}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <ChartLine
-                      key={indexSelected}
-                      data={boardData[numberI].data}
-                      options={boardData[numberI].options}
-                    />
-                  </>
-                )}
                 {boardData[numberI] &&
                   boardData[numberI].type === 'stackedArea' && (
                     <ChartStackedArea
