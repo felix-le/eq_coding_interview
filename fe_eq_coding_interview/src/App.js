@@ -1,4 +1,5 @@
-import Dashboard from './containers/Dashboard';
+import Dashboard from './containers/Dashboard/index';
+import '@carbon/charts/styles.css';
 
 function App() {
   // console.log(Object.keys(checkEHourly.eventSlice).length);

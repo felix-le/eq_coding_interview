@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getEventHourlyApi, getEDailyApi } from '../api/getEvents';
-
+import dayjs from 'dayjs';
 // First create the thunk
 
 export const getEHourly = createAsyncThunk('/events/hourly', () => {
@@ -19,10 +19,23 @@ const eventSlice = createSlice({
   },
   extraReducers: {
     [getEHourly.fulfilled]: (state, action) => {
-      state.eHourlyApi = action.payload;
+      state.eHourlyApi = action.payload.map((item) => {
+        const newObj = {
+          ...item,
+          date: dayjs(item.date).format('DD-MM-YYYY'),
+        };
+        return newObj;
+      });
     },
     [getEDaily.fulfilled]: (state, action) => {
-      state.eDailyApi = action.payload;
+      state.eDailyApi = action.payload.map((item) => {
+        const newObj = {
+          ...item,
+          events: Number(item.events),
+          date: dayjs(item.date).format('DD-MM-YYYY'),
+        };
+        return newObj;
+      });
     },
   },
 });

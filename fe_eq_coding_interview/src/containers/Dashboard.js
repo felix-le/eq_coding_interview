@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getEHourly, getEDaily } from '../store/events';
 import { getSHourly, getSDaily } from '../store/stats';
 import { getPoi } from '../store/poi';
-import { combineFn } from '../helpers/helpers';
+import { combineFn } from '../helpers';
 import '@carbon/charts/styles.css';
 import GridLayout from '../modules/GridLayout';
 import dayjs from 'dayjs';
@@ -53,7 +53,7 @@ const headerData = [
 
 const optionViews = [
   {
-    label: 'CTR (Impressions/clicks)',
+    label: 'CTR (Clicks/Impressions)',
     value: {
       bottom: { mapsTo: 'impressions', scaleType: 'clicks' },
       left: { mapsTo: 'clicks', scaleType: 'linear' },
@@ -77,6 +77,7 @@ const optionViews = [
 
 const Dashboard = () => {
   const initialState = useSelector((state) => state);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getEHourly());
@@ -86,16 +87,28 @@ const Dashboard = () => {
     dispatch(getSDaily());
   }, [dispatch]);
 
+  let testApi = initialState.eventSlice.eDailyApi.map((item) => {
+    const newObj = { ...item, events: Number(item.revenue) };
+    return newObj;
+  });
+
   const addons = [1, 2, 3]; // number of chart/table
   //set number of opt select (2.c)
   const [indexSelected, setIndexSelected] = useState(0);
 
   // Get data from API - initial value
   const pois = initialState.poiSlice.poiApi;
-  const sHourly = initialState.statsSlice.sHourlyApi;
+  const sHourly = initialState.statsSlice.sHourlyApi.map((item) => {
+    const newObj = { ...item, events: Number(item.revenue) };
+    return newObj;
+  });
+
   const sDaily = initialState.statsSlice.sDailyApi;
   const eDaily = initialState.eventSlice.eDailyApi;
-  const eHourly = initialState.eventSlice.eHourlyApi;
+  const eHourly = initialState.eventSlice.eHourlyApi.map((item) => {
+    const newObj = { ...item, events: Number(item.revenue) };
+    return newObj;
+  });
   // Combine to get an array of poi_id - raw data
   function combineArr() {
     const poiShourly = combineFn(pois, sHourly, 'poi_id');
@@ -151,30 +164,6 @@ const Dashboard = () => {
     },
   });
 
-  // Requirement 2a
-  function convertsHourly() {
-    let newObj = { ...sHourly };
-    let objArr = [];
-
-    for (const obj in newObj) {
-      const eleArr = {
-        ...newObj[obj],
-        group: `${newObj[obj].hour}`,
-        impressions: Number(newObj[obj].impressions),
-        revenue: Number(newObj[obj].revenue),
-      };
-      objArr.push(eleArr);
-    }
-
-    setDataBoard({
-      ...dataBoard,
-      1: { ...dataBoard[1], data: objArr },
-    });
-  }
-  useEffect(() => {
-    convertsHourly();
-  }, [sHourly]);
-
   // Requirement 2b
   function convertRawDataTable() {
     let dataNew = [];
@@ -185,27 +174,21 @@ const Dashboard = () => {
           id: item.poi_id.toString(),
           date: dayjs(item.date).format('DD-MM-YYYY'),
           // 1B
-          revenue: Number(item.revenue).toFixed(3),
-          CTR: Number(
-            Number(
-              (Number(item.clicks) / Number(item.impressions)) * 100
-            ).toFixed(2)
-          ),
+          revenue: Number(item.revenue),
+          CTR: (item.clicks / item.impressions) * 100,
           status: 'Pause',
           type: 'Display',
-          avgCPC: Number(
-            (Number(item.revenue) / Number(item.clicks)).toFixed(2)
-          ),
-          avgCPV: Number(
-            ((Number(item.revenue) / Number(item.impressions)) * 1000).toFixed(
-              2
-            )
-          ),
+          avgCPC: item.revenue / item.clicks,
+          avgCPV: (item.revenue / item.impressions) * 1000,
           isShowSearch: false,
           group: item.name,
+          impressions: Number(item.impressions),
+          hour: Number(item.hour),
+          clicks: Number(item.clicks),
         })
       );
     }
+
     setDataBoard({
       ...dataBoard,
       2: { ...dataBoard[2], data: dataNew },
