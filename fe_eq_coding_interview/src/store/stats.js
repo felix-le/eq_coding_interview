@@ -18,7 +18,7 @@ const statsSlice = createSlice({
         const newObj = {
           ...item,
           revenue: Number(Number(item.revenue).toFixed(2)),
-          date: dayjs(item.date).format('DD-MM-YYYY'),
+          date: dayjs(item.date).format(' MM-DD'),
         };
         return newObj;
       });
@@ -27,7 +27,7 @@ const statsSlice = createSlice({
       state.sDailyApi = action.payload.map((item) => {
         const newObj = {
           ...item,
-          date: dayjs(item.date).format('DD-MM-YYYY'),
+          date: dayjs(item.date).format(' MM-DD'),
           impressions: Number(item.impressions),
           clicks: Number(item.clicks),
           revenue: Number(Number(item.revenue).toFixed(2)),

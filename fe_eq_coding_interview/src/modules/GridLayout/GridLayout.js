@@ -5,7 +5,7 @@ import RGL, { WidthProvider } from 'react-grid-layout';
 // carbon core
 import Close20 from '@carbon/icons-react/lib/close/20';
 import { OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
-
+import { v4 } from 'uuidv4';
 // Chart
 import ChartStackedArea from './ChartStackedArea';
 import DataTable from './DataTable';

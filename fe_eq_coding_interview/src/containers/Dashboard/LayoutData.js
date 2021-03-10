@@ -1,23 +1,18 @@
+import { useState, useEffect } from 'react';
+import GridLayout from '../../modules/GridLayout';
 const optionViews = [
   {
     label: 'CTR (Clicks/Impressions)',
     value: {
-      bottom: { mapsTo: 'impressions', scaleType: 'clicks' },
-      left: { mapsTo: 'clicks', scaleType: 'linear' },
+      bottom: { scaleType: 'time', mapsTo: 'date' },
+      left: { mapsTo: 'events' },
     },
   },
   {
     label: 'Clicks/revenue (AvgCPC)',
     value: {
-      bottom: { mapsTo: 'click', scaleType: 'avgCPC' },
-      left: { mapsTo: 'revenue', scaleType: 'linear' },
-    },
-  },
-  {
-    label: 'CTR/Time',
-    value: {
-      bottom: { mapsTo: 'hour', scaleType: 'clicks' },
-      left: { mapsTo: 'CTR', scaleType: 'linear' },
+      bottom: { mapsTo: 'click' },
+      left: { mapsTo: 'revenue' },
     },
   },
 ];
@@ -64,42 +59,93 @@ const headerDataTable = [
     header: 'Revenue (1B)',
   },
 ];
+const addons = [1, 2, 3]; // number of chart/table
 const LayoutData = ({ stackedAreaChart, tableData }) => {
+  const [indexSelected, setIndexSelected] = useState(0);
   const optionCharts = [
     {
-      id: 123,
-      type: 'stackedArea',
-      option: {
-        axes: {
-          bottom: { scaleType: 'time', mapsTo: 'date' },
-          left: { mapsTo: 'impressions' },
-          curve: 'curveMonotoneX',
-          height: '100%',
-          title: 'Stacked area (time series)',
-        },
+      axes: {
+        bottom: { scaleType: 'time', mapsTo: 'date' },
+        left: { mapsTo: 'events' },
       },
+      curve: 'curveMonotoneX',
+      height: '80%',
+      title: 'Number events/days',
     },
     {
-      id: 456,
+      type: 'table',
+    },
+    {
       axes: optionViews[0].value,
       curve: 'curveMonotoneX',
       height: '100%',
-      legend: { alignment: 'center', enabled: true },
       title: optionViews[0].label,
-      tooltip: { enabled: true, showTotal: true },
       color: {
         scale: {
           'EQ Works': 'blue',
+          'CN Tower': '#FF6633',
+          'Niagara Falls': '#00CC00',
+          'Vancouver Harbour': '#FFDC00',
         },
-        'CN Tower': '#FF6633',
-        'Niagara Falls': '#00CC00',
-        'Vancouver Harbour': '#FFDC00',
       },
-      type: 'line',
     },
   ];
+  const [boardData, setboardData] = useState({
+    1: {
+      data: stackedAreaChart,
+      options: optionCharts[0],
+      id: 123,
+      type: 'stackedArea',
+    },
+    2: {
+      type: optionCharts[1].type,
+    },
+    3: {
+      data: tableData,
+      options: optionCharts[2],
+      type: 'stackedArea',
+    },
+  });
+  console.log(
+    '🚀 ~ file: LayoutData.js ~ line 108 ~ LayoutData ~ boardData',
+    boardData
+  );
 
-  return <>this is layoutData</>;
+  useEffect(() => {
+    if (stackedAreaChart.length > 0) {
+      boardData[1].data = stackedAreaChart;
+    }
+    if (tableData.length > 0) {
+      boardData[2].data = tableData.map((item) => {
+        const newObj = { ...item, id: item.poi_id.toString() };
+        return newObj;
+      });
+      boardData[3].data = tableData;
+    }
+    setboardData({ ...boardData });
+  }, [stackedAreaChart, tableData]);
+
+  useEffect(() => {
+    boardData[3].options.axes = optionViews[indexSelected].value;
+    boardData[3].options.title = optionViews[indexSelected].label;
+    setboardData({ ...boardData });
+  }, [indexSelected]);
+
+  return (
+    <>
+      <h2>hello</h2>
+      {tableData.length > 0 && (
+        <GridLayout
+          boardData={boardData}
+          addons={addons}
+          headerData={headerDataTable}
+          optionViews={optionViews}
+          indexSelected={indexSelected}
+          setIndexSelected={setIndexSelected}
+        />
+      )}
+    </>
+  );
 };
 
 export default LayoutData;

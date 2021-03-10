@@ -22,7 +22,8 @@ const eventSlice = createSlice({
       state.eHourlyApi = action.payload.map((item) => {
         const newObj = {
           ...item,
-          date: dayjs(item.date).format('DD-MM-YYYY'),
+          date: dayjs(item.date).format('YYYY-MM-DD'),
+          group: `Event ${item.events}`,
         };
         return newObj;
       });
@@ -32,7 +33,7 @@ const eventSlice = createSlice({
         const newObj = {
           ...item,
           events: Number(item.events),
-          date: dayjs(item.date).format('DD-MM-YYYY'),
+          date: dayjs(item.date).format('YYYY-MM-DD'),
         };
         return newObj;
       });

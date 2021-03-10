@@ -66,13 +66,13 @@ const optionViews = [
       left: { mapsTo: 'revenue', scaleType: 'linear' },
     },
   },
-  {
-    label: 'CTR/Time',
-    value: {
-      bottom: { mapsTo: 'hour', scaleType: 'clicks' },
-      left: { mapsTo: 'CTR', scaleType: 'linear' },
-    },
-  },
+  // {
+  //   label: 'CTR/Time',
+  //   value: {
+  //     bottom: { mapsTo: 'hour', scaleType: 'clicks' },
+  //     left: { mapsTo: 'CTR', scaleType: 'linear' },
+  //   },
+  // },
 ];
 
 const Dashboard = () => {

@@ -9,7 +9,13 @@ const poiSlice = createSlice({
   initialState: { poiApi: [] },
   extraReducers: {
     [getPoi.fulfilled]: (state, action) => {
-      state.poiApi = action.payload;
+      state.poiApi = action.payload.map((item) => {
+        const newObj = {
+          ...item,
+          group: item.name,
+        };
+        return newObj;
+      });
     },
   },
 });

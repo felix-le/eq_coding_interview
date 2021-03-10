@@ -29,7 +29,7 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
 
   useEffect(() => {
     combineArr();
-  }, []);
+  }, [eDaily, eHourly, poi, sDaily, sHourly]);
 
   useEffect(() => {
     dispatch(getEHourly());
