@@ -60,7 +60,11 @@ const headerDataTable = [
   },
 ];
 const addons = [1, 2]; // number of chart/table
-const LayoutData = ({ stackedAreaChart, tableData }) => {
+const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
+  console.log(
+    '🚀 ~ file: LayoutData.js ~ line 64 ~ LayoutData ~ dataBoard3',
+    dataBoard3
+  );
   // const newTableData =
   // tableData.data.map((item) => {
   //   const newObj = {

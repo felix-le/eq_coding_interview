@@ -16,10 +16,7 @@ const mapState = (state) => ({
 
 const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
   const [tableData, setTableData] = useState([]);
-  console.log(
-    '🚀 ~ file: index.js ~ line 19 ~ Dashboard ~ tableData',
-    tableData
-  );
+  const [dataBoard3, setDataBoard3] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -28,7 +25,8 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
     const pShSd = combineFn(poiShourly, sDaily, 'revenue');
     const pShSdEd = combineFn(pShSd, eDaily, 'date');
     const final = combineFn(pShSdEd, eHourly, 'events');
-    console.log('🚀 ~ file: index.js ~ line 28 ~ combineArr ~ final', final);
+
+    // CTR, avgCPC, avgCPV must be string for table
     const newObj = final.map((item) => {
       const newObj2 = {
         ...item,
@@ -40,7 +38,18 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
       };
       return newObj2;
     });
+    // CTR, avgCPC, avgCPV must be Number for Chart 3
+    const board3 = newObj.map((item) => {
+      const formatObj = {
+        ...item,
+        CTR: Number(item.CTR),
+        avgCPC: Number(item.avgCPC),
+        avgCPV: Number(item.avgCPV),
+      };
+      return formatObj;
+    });
     setTableData(newObj);
+    setDataBoard3(board3);
   }
 
   useEffect(() => {
@@ -54,7 +63,13 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
     dispatch(getSHourly());
     dispatch(getSDaily());
   }, [dispatch]);
-  return <LayoutData stackedAreaChart={eHourly} tableData={tableData} />;
+  return (
+    <LayoutData
+      stackedAreaChart={eHourly}
+      tableData={tableData}
+      dataBoard3={dataBoard3}
+    />
+  );
 };
 
 export default connect(mapState, null)(Dashboard);
