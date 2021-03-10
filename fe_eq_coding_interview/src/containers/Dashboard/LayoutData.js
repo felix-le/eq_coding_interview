@@ -4,7 +4,7 @@ const optionViews = [
   {
     label: 'CTR (Clicks/Impressions)',
     value: {
-      bottom: { scaleType: 'time', mapsTo: 'date' },
+      bottom: { scaleType: 'clicks', mapsTo: 'impressions' },
       left: { mapsTo: 'events' },
     },
   },
@@ -103,13 +103,9 @@ const LayoutData = ({ stackedAreaChart, tableData }) => {
     3: {
       data: tableData,
       options: optionCharts[2],
-      type: 'stackedArea',
+      type: 'line',
     },
   });
-  console.log(
-    '🚀 ~ file: LayoutData.js ~ line 108 ~ LayoutData ~ boardData',
-    boardData
-  );
 
   useEffect(() => {
     if (stackedAreaChart.length > 0) {
@@ -133,7 +129,6 @@ const LayoutData = ({ stackedAreaChart, tableData }) => {
 
   return (
     <>
-      <h2>hello</h2>
       {tableData.length > 0 && (
         <GridLayout
           boardData={boardData}
