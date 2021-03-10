@@ -175,32 +175,30 @@ const DefaultPage = ({
                   </div>
                 )}
 
-                {boardData[numberI] &&
-                  boardData[numberI].type === 'line' &&
-                  boardData[numberI].data.clicks && (
-                    <>
-                      <div className='select-container'>
-                        <select
-                          onChange={(e) => setIndexSelected(e.target.value)}
-                          defaultValue={0}
-                        >
-                          {optionViews.map((option, i) => (
-                            <option key={i} value={i}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <ChartStackedArea
-                        key={indexSelected}
-                        data={boardData[numberI].data}
-                        options={boardData[numberI].options}
-                      />
-                    </>
-                  )}
+                {boardData[numberI] && boardData[numberI].type === 'line' && (
+                  <>
+                    <div className='select-container'>
+                      <select
+                        onChange={(e) => setIndexSelected(e.target.value)}
+                        defaultValue={0}
+                      >
+                        {optionViews.map((option, i) => (
+                          <option key={i} value={i}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <ChartLine
+                      key={indexSelected}
+                      data={boardData[numberI].data}
+                      options={boardData[numberI].options}
+                    />
+                  </>
+                )}
                 {boardData[numberI] &&
                   boardData[numberI].type === 'stackedArea' && (
-                    <ChartLine
+                    <ChartStackedArea
                       data={boardData[numberI].data}
                       options={boardData[numberI].options}
                     />

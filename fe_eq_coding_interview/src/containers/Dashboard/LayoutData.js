@@ -59,23 +59,8 @@ const headerDataTable = [
     header: 'Revenue (1B)',
   },
 ];
-const addons = [1, 2]; // number of chart/table
+const addons = [1, 2, 3]; // number of chart/table
 const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
-  console.log(
-    '🚀 ~ file: LayoutData.js ~ line 64 ~ LayoutData ~ dataBoard3',
-    dataBoard3
-  );
-  // const newTableData =
-  // tableData.data.map((item) => {
-  //   const newObj = {
-  //     ...item,
-  //     CTR: item.clicks / item.impressions,
-  //     status: 'Pause',
-  //     type: 'Display',
-  //   };
-  //   return newObj;
-  // });
-
   const [indexSelected, setIndexSelected] = useState(0);
 
   const optionCharts = [
@@ -117,7 +102,7 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
       type: optionCharts[1].type,
     },
     3: {
-      data: tableData,
+      data: dataBoard3,
       options: optionCharts[2],
       type: 'line',
     },
@@ -132,10 +117,12 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
         const newObj = { ...item, id: item.poi_id.toString() };
         return newObj;
       });
-      boardData[3].data = tableData;
+    }
+    if (dataBoard3.length > 0) {
+      boardData[3].data = dataBoard3;
     }
     setboardData({ ...boardData });
-  }, [stackedAreaChart, tableData]);
+  }, [stackedAreaChart, tableData, dataBoard3]);
 
   useEffect(() => {
     boardData[3].options.axes = optionViews[indexSelected].value;
