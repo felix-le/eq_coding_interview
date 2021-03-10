@@ -5,6 +5,8 @@ There are two folders in the repository.
 1. Backend (with some requirements)
 2. Front-end (built by ReactJS, redux-toolkit, carbon-charts, styles-components .etc.)
 
+![Final](images/Final.png)
+
 ## How it work
 
 **cd to folder respectively**
@@ -42,7 +44,3 @@ yarn run dev
 yarn
 yarn start
 ```
-
-### Issues
-
-Sometimes chart 1 or 3 cannot show
