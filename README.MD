@@ -15,11 +15,7 @@ There are two folders in the repository.
    1.1 Create a new .env files
 
 ```json
-PGHOST=work-samples-db.cx4wctygygyq.us-east-1.rds.amazonaws.com
-PGPORT=5432
-PGDATABASE=work_samples
-PGUSER=readonly
-PGPASSWORD=w2UIO@#bg532!
+
 ```
 
 1.2 install and add dotenv library
