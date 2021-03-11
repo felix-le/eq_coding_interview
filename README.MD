@@ -12,9 +12,11 @@ There are two folders in the repository.
 **cd to folder respectively**
 
 1. Backend
-   1.1 Create a new .env files
+
+   1.1 URL API
 
 ```json
+https://mellow-flaxen-germanium.glitch.me/
 
 ```
 
