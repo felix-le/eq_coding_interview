@@ -20,39 +20,38 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
 
   const dispatch = useDispatch();
 
-  function combineArr() {
-    const poiShourly = combineFn(poi, sHourly, 'poi_id');
-    const pShSd = combineFn(poiShourly, sDaily, 'revenue');
-    const pShSdEd = combineFn(pShSd, eDaily, 'date');
-    const final = combineFn(pShSdEd, eHourly, 'events');
-
-    // CTR, avgCPC, avgCPV must be string for table
-    const newObj = final.map((item) => {
-      const newObj2 = {
-        ...item,
-        CTR: ((item.clicks / item.impressions) * 100).toFixed(2),
-        status: 'Pause',
-        type: 'Display',
-        avgCPC: (item.revenue / item.clicks).toFixed(2),
-        avgCPV: ((item.revenue / item.impressions) * 1000).toFixed(2),
-      };
-      return newObj2;
-    });
-    // CTR, avgCPC, avgCPV must be Number for Chart 3
-    const board3 = newObj.map((item) => {
-      const formatObj = {
-        ...item,
-        CTR: Number(item.CTR),
-        avgCPC: Number(item.avgCPC),
-        avgCPV: Number(item.avgCPV),
-      };
-      return formatObj;
-    });
-    setTableData(newObj);
-    setDataBoard3(board3);
-  }
-
   useEffect(() => {
+    function combineArr() {
+      const poiShourly = combineFn(poi, sHourly, 'poi_id');
+      const pShSd = combineFn(poiShourly, sDaily, 'revenue');
+      const pShSdEd = combineFn(pShSd, eDaily, 'date');
+      const final = combineFn(pShSdEd, eHourly, 'events');
+
+      // CTR, avgCPC, avgCPV must be string for table
+      const newObj = final.map((item) => {
+        const newObj2 = {
+          ...item,
+          CTR: ((item.clicks / item.impressions) * 100).toFixed(2),
+          status: 'Pause',
+          type: 'Display',
+          avgCPC: (item.revenue / item.clicks).toFixed(2),
+          avgCPV: ((item.revenue / item.impressions) * 1000).toFixed(2),
+        };
+        return newObj2;
+      });
+      // CTR, avgCPC, avgCPV must be Number for Chart 3
+      const board3 = newObj.map((item) => {
+        const formatObj = {
+          ...item,
+          CTR: Number(item.CTR),
+          avgCPC: Number(item.avgCPC),
+          avgCPV: Number(item.avgCPV),
+        };
+        return formatObj;
+      });
+      setTableData(newObj);
+      setDataBoard3(board3);
+    }
     combineArr();
   }, [eDaily, eHourly, poi, sDaily, sHourly]);
 
