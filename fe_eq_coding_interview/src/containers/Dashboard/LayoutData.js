@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import ChartLine from './ChartLine';
 import DataTable from './DataTable';
 import ChartStackedArea from './ChartStackedArea';
-import { OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
 import { ModalWrapper } from 'carbon-components-react';
 const optionViews = [
   {
@@ -66,7 +65,6 @@ const headerDataTable = [
 const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
   const [indexSelected, setIndexSelected] = useState(0);
   const [newTableData, setNewTableData] = useState([]);
-  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const optionStackedAreaChart = {
     axes: {
