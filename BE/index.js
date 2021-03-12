@@ -7,6 +7,11 @@ const app = express();
 const pool = new pg.Pool();
 
 const queryHandler = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
   pool
     .query(req.sqlQuery)
     .then((r) => {
