@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ChartLine from './ChartLine';
 import DataTable from './DataTable';
 import ChartStackedArea from './ChartStackedArea';
-import { ModalWrapper } from 'carbon-components-react';
+import 'carbon-components/css/carbon-components.min.css';
 const optionViews = [
   {
     label: 'Clicks/revenue (AvgCPC)',
@@ -65,7 +65,11 @@ const headerDataTable = [
 const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
   const [indexSelected, setIndexSelected] = useState(0);
   const [newTableData, setNewTableData] = useState([]);
-
+  const [fullWidth, setFullWidth] = useState(false);
+  console.log(
+    '🚀 ~ file: LayoutData.js ~ line 69 ~ LayoutData ~ fullWidth',
+    fullWidth
+  );
   const optionStackedAreaChart = {
     axes: {
       bottom: { scaleType: 'time', mapsTo: 'date' },
@@ -132,18 +136,13 @@ const LayoutData = ({ stackedAreaChart, tableData, dataBoard3 }) => {
         )}
       </div>
 
-      <div className='opt_chart_wrapper' style={{ position: 'relative' }}>
-        <div className='model__wrapper'>
-          <ModalWrapper
-            buttonTriggerText='Full width'
-            modalHeading='Full-width view'
-            className='modal_fullwidth'
-            size='lg'
-            passiveModal
-          >
-            <ChartLineContent />
-          </ModalWrapper>
-        </div>
+      <div className={`${fullWidth ? 'fullWidth' : ''} opt_chart_wrapper `}>
+        <button
+          className='btn btn-primary'
+          onClick={() => setFullWidth(!fullWidth)}
+        >
+          Full width
+        </button>
         <ChartLineContent />
       </div>
     </div>
