@@ -1,4 +1,4 @@
-import Dashboard from './containers/Dashboard/index';
+import Dashboard from './containers/Dashboard/';
 import '@carbon/charts/styles.css';
 
 function App() {

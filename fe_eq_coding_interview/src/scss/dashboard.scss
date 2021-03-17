@@ -236,7 +236,7 @@
   display:block;
   padding-top: 10px;
 }
-.selected_matrix{
+.selected_metric{
   padding: 10px;
 }
 
@@ -251,4 +251,49 @@
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.button__full_width__wrapper{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mapChart__Wrapper{
+  background: white;
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .controls {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    margin: 1.25rem 0;
+    text-align: center;
+    transform: translateX(-50%);
+  }
+  
+  .controls > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    height: 2rem;
+    width: 2rem;
+    background: #ff5533;
+    color: #fff;
+    border-radius: 100%;
+    border: 0;
+  }
+  .controls > button:first-child {
+    margin-right: 0.25rem;
+  }
+}
+
+.opt_poi__wrapper{
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
 }

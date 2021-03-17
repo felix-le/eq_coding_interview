@@ -13,7 +13,7 @@ import {
   TableToolbarSearch,
 } from 'carbon-components-react';
 import 'carbon-components/css/carbon-components.min.css';
-const ResultTable = ({ rowData, headerData }) => {
+const TableDataComponent = ({ rowData, headerData }) => {
   const [highLight, sethighLight] = useState([]);
 
   const fnSearch = (e) => {
@@ -71,4 +71,4 @@ const ResultTable = ({ rowData, headerData }) => {
     </DataTable>
   );
 };
-export default ResultTable;
+export default TableDataComponent;

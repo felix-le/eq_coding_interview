@@ -4,7 +4,7 @@ import { getEHourly, getEDaily } from '../../store/events';
 import { getSHourly, getSDaily } from '../../store/stats';
 import { getPoi } from '../../store/poi';
 import { connect } from 'react-redux';
-import LayoutData from './LayoutData';
+import LayoutData2 from './LayoutData2';
 import { combineFn } from '../../helpers/';
 const mapState = (state) => ({
   eDaily: state.eventSlice.eDailyApi,
@@ -62,13 +62,7 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
     dispatch(getSHourly());
     dispatch(getSDaily());
   }, [dispatch]);
-  return (
-    <LayoutData
-      stackedAreaChart={eHourly}
-      tableData={tableData}
-      dataBoard3={dataBoard3}
-    />
-  );
+  return <LayoutData2 dataBoard3={dataBoard3} />;
 };
 
 export default connect(mapState, null)(Dashboard);

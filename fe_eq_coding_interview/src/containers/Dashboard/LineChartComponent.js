@@ -1,6 +1,6 @@
 import { LineChart } from '@carbon/charts-react';
 
-const ChartLine = ({ data, options }, key) => {
+const LineChartComponent = ({ data, options }, key) => {
   return (
     <div className='chartCarbon'>
       <LineChart data={data} options={options} key={key} />
@@ -8,4 +8,4 @@ const ChartLine = ({ data, options }, key) => {
   );
 };
 
-export default ChartLine;
+export default LineChartComponent;
