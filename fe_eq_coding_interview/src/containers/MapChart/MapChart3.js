@@ -5,9 +5,9 @@ import useSupercluster from 'use-supercluster';
 const Marker = ({ children }) => children;
 
 const MapChart3 = ({ data }) => {
+  console.log('🚀 ~ file: MapChart3.js ~ line 8 ~ MapChart3 ~ data', data);
   const mapRef = useRef();
   const [zoom, setZoom] = useState(10);
-  console.log('🚀 ~ file: MapChart3.js ~ line 10 ~ MapChart3 ~ zoom', zoom);
   const [bounds, setBounds] = useState({
     ne: {
       lat: 43.72994718039476,
@@ -26,8 +26,26 @@ const MapChart3 = ({ data }) => {
       lng: -79.79960904530401,
     },
   });
-
   const [dataMap, setDataMap] = useState([]);
+
+  const [metric, setMetric] = useState('impressions');
+  // Set
+  const optMetrics = [
+    'Impressions',
+    'Clicks',
+    'Revenue',
+    'CTR',
+    'AvgCPC',
+    'AvgCPV',
+  ];
+  function _handlePoiSelected(e) {
+    const value = e.target.value;
+    if (value === 'Impressions' || value === 'Clicks' || value === 'Revenue') {
+      setMetric(value.toLowerCase());
+    } else {
+      setMetric(value);
+    }
+  }
 
   // load and format data
   function formatData(inputData) {
@@ -41,6 +59,7 @@ const MapChart3 = ({ data }) => {
           properties: {
             category: item.Type,
             cluster: false,
+            name: item.name,
           },
           geometry: { type: 'Point', coordinates: [item.lon, item.lat] },
         };
@@ -61,10 +80,6 @@ const MapChart3 = ({ data }) => {
     options: { radius: 75, maxZoom: 20 },
   });
 
-  console.log(
-    '🚀 ~ file: MapChart3.js ~ line 40 ~ MapChart3 ~ clusters',
-    clusters
-  );
   const _handlerZoomBounds = (zoom, bounds) => {
     setZoom(zoom);
     setBounds([bounds.nw.lng, bounds.se.lat, bounds.se.lng, bounds.nw.lat]);
@@ -72,6 +87,18 @@ const MapChart3 = ({ data }) => {
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
+      <div className='select-container'>
+        <select
+          className='selected_pois'
+          onChange={(e) => _handlePoiSelected(e)}
+        >
+          {optMetrics.map((item, i) => (
+            <option key={i} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
       <GoogleMapReact
         bootstrapURLKeys={{ key: process.env.REACT_APP_MAPBOX_TOKEN }}
         defaultCenter={{ lat: 43.653225, lng: -79.383186 }}
@@ -115,6 +142,12 @@ const MapChart3 = ({ data }) => {
             <Marker key={cluster.poi_id} lat={latitude} lng={longtitude}>
               <div className='icon-wrapper'>
                 <FaBuilding />
+              </div>
+              <div className='text-icon-wrapper'>
+                {cluster.name && <p className='cluster_name'>{cluster.name}</p>}
+                {Object.keys(cluster).length > 0 && (
+                  <p className='metric_value'>{cluster[metric]}</p>
+                )}
               </div>
             </Marker>
           );
