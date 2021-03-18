@@ -51,7 +51,7 @@ const MapChart = ({ data }) => {
     let data = [...inputData];
     let newFormatData = [];
     if (data.length > 0) {
-      data.map((item) => {
+      data.forEach((item) => {
         const newData = {
           ...item,
           type: 'Place',
@@ -114,10 +114,7 @@ const MapChart = ({ data }) => {
       >
         {clusters.map((cluster) => {
           const [longtitude, latitude] = cluster.geometry.coordinates;
-          const {
-            cluster: isCluster,
-            point_count: point_count,
-          } = cluster.properties;
+          const { cluster: isCluster, point_count } = cluster.properties;
 
           if (isCluster) {
             return (
