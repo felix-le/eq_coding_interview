@@ -4,8 +4,7 @@ import { FaBuilding } from 'react-icons/fa';
 import useSupercluster from 'use-supercluster';
 const Marker = ({ children }) => children;
 
-const MapChart3 = ({ data }) => {
-  console.log('🚀 ~ file: MapChart3.js ~ line 8 ~ MapChart3 ~ data', data);
+const MapChart = ({ data }) => {
   const mapRef = useRef();
   const [zoom, setZoom] = useState(10);
   const [bounds, setBounds] = useState({
@@ -86,7 +85,7 @@ const MapChart3 = ({ data }) => {
   };
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <div className='select-container'>
         <select
           className='selected_pois'
@@ -98,6 +97,10 @@ const MapChart3 = ({ data }) => {
             </option>
           ))}
         </select>
+        <div className='inputZoom__wrapper'>
+          <p>Zoom Level: &#32; </p>
+          <p className='box_zoom'> &#32; {zoom}</p>
+        </div>
       </div>
       <GoogleMapReact
         bootstrapURLKeys={{ key: process.env.REACT_APP_MAPBOX_TOKEN }}
@@ -157,4 +160,4 @@ const MapChart3 = ({ data }) => {
   );
 };
 
-export default MapChart3;
+export default MapChart;

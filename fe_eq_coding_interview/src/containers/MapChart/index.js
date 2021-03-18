@@ -1,1 +1,1 @@
-export { default } from './MapChart3';
+export { default } from './MapChart';

@@ -88,21 +88,17 @@ const DashboardData = ({ stackedAreaChart, tableData, mapChartData }) => {
           EQ Works - Work Sample
         </HeaderName>
         <HeaderNavigation aria-label='Felix Le'>
-          <HeaderMenuItem href='#Dashboard'>Dashboard</HeaderMenuItem>
-          <HeaderMenuItem href='#mapchart'>DataChart</HeaderMenuItem>
+          <HeaderMenuItem href='/#Dashboard'>Dashboard</HeaderMenuItem>
+          <HeaderMenuItem href='/#mapchart'>DataChart</HeaderMenuItem>
         </HeaderNavigation>
       </Header>
-      <div
-        // style={{ marginTop: '200px' }}
-        id='ChartStakedArea'
-      >
-        {/* <div className='chartStacked_wrapper'>
+      <div style={{ marginTop: '200px' }} id='two_charts'>
+        <div className='chartStacked_wrapper'>
           <ChartStackedArea
             data={stackedAreaChart}
             options={optionStackedAreaChart}
           />
         </div>
-
         <div className='dataTable_wrapper'>
           {newTableData.length > 0 && (
             <TableDataComponent
@@ -110,7 +106,7 @@ const DashboardData = ({ stackedAreaChart, tableData, mapChartData }) => {
               headerData={headerDataTable}
             />
           )}
-        </div> */}
+        </div>
       </div>
       <div className='opt_poi__wrapper' id='mapChart'>
         <MapChart data={mapChartData} />

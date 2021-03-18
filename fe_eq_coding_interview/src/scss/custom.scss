@@ -1,5 +1,7 @@
 
-
+#two_charts{
+  padding: 20px;
+}
 // Table Data
 .dataTable_wrapper{
   margin-top: 50px;
@@ -17,10 +19,6 @@
   margin-top: 30px;
 }
 
-.opt_poi__wrapper{
-  text-align: center;
-  margin-top: 50px;
-}
 
 .title{
   margin-bottom: 30px;
@@ -63,3 +61,44 @@
   display: flex;
 }
 
+
+.opt_poi__wrapper{
+  text-align: center;
+  padding: 20px;
+  height: 800px;
+  .inputZoom__wrapper{
+    margin-left: 10px;
+    // width: fit-content;
+    text-align: center;
+    display: flex;
+    background-color: white;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+    
+    p{
+      font-size:14px;
+      padding: 0;
+      &.box_zoom{
+        color: #007bff;
+      }
+    }
+  }
+
+  .select-container{
+    background-color:	#A8A8A8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  
+    .selected_pois{
+      padding: 10px;
+
+      option{
+        padding: 5px;
+      }
+    }
+}
+}
