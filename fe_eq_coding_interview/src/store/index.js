@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-import eventSlice from './events';
-import statsSlice from './stats';
-import poiSlice from './poi';
+import eventSlice from './slices/events';
+import statsSlice from './slices/stats';
+import poiSlice from './slices/poi';
+import formalDataSlice from './slices/formatData';
 const reducer = combineReducers({
   eventSlice,
   statsSlice,
   poiSlice,
+  formalDataSlice,
 });
 
 const store = configureStore({

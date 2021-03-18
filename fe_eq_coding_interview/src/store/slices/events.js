@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getEventHourlyApi, getEDailyApi } from '../api/getEvents';
+import { getEventHourlyApi, getEDailyApi } from '../../api/getEvents';
 import dayjs from 'dayjs';
 // First create the thunk
 

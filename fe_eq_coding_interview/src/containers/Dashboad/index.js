@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getEHourly, getEDaily } from '../../store/events';
-import { getSHourly, getSDaily } from '../../store/stats';
-import { getPoi } from '../../store/poi';
 import { connect } from 'react-redux';
-import LayoutData2 from './LayoutData2';
 import { combineFn } from '../../helpers/';
+// Get functions from slices
+import { getEHourly, getEDaily } from '../../store/slices/events';
+import { getSHourly, getSDaily } from '../../store/slices/stats';
+import { getPoi } from '../../store/slices/poi';
+import { updateFormalData } from '../../store/slices/formatData';
+// Import components
+import DashboardData from './DashboardData';
+
 const mapState = (state) => ({
   eDaily: state.eventSlice.eDailyApi,
   eHourly: state.eventSlice.eHourlyApi,
@@ -16,7 +20,6 @@ const mapState = (state) => ({
 
 const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
   const [tableData, setTableData] = useState([]);
-  const [dataBoard3, setDataBoard3] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -32,25 +35,31 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
         const newObj2 = {
           ...item,
           CTR: ((item.clicks / item.impressions) * 100).toFixed(2),
-          status: 'Pause',
-          type: 'Display',
-          avgCPC: (item.revenue / item.clicks).toFixed(2),
-          avgCPV: ((item.revenue / item.impressions) * 1000).toFixed(2),
+          Status: 'Pause',
+          Type: 'Display',
+          AvgCPC: (item.revenue / item.clicks).toFixed(2),
+          AvgCPV: ((item.revenue / item.impressions) * 1000).toFixed(2),
         };
         return newObj2;
       });
-      // CTR, avgCPC, avgCPV must be Number for Chart 3
-      const board3 = newObj.map((item) => {
-        const formatObj = {
+
+      // CTR, avgCPC, avgCPV must be Number for Map Chart
+      const numberObj = newObj.map((item) => {
+        const newNumberObj = {
           ...item,
           CTR: Number(item.CTR),
-          avgCPC: Number(item.avgCPC),
-          avgCPV: Number(item.avgCPV),
+          AvgCPC: Number(item.AvgCPC),
+          AvgCPV: Number(item.AvgCPV),
         };
-        return formatObj;
+        return newNumberObj;
       });
+      console.log(
+        '🚀 ~ file: index.js ~ line 56 ~ numberObj ~ numberObj',
+        numberObj
+      );
+
+      // dispatch(updateFormalData(numberObj));
       setTableData(newObj);
-      setDataBoard3(board3);
     }
     combineArr();
   }, [eDaily, eHourly, poi, sDaily, sHourly]);
@@ -62,7 +71,7 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
     dispatch(getSHourly());
     dispatch(getSDaily());
   }, [dispatch]);
-  return <LayoutData2 dataBoard3={dataBoard3} />;
+  return <DashboardData stackedAreaChart={eHourly} tableData={tableData} />;
 };
 
 export default connect(mapState, null)(Dashboard);

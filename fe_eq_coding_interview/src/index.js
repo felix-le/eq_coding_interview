@@ -4,11 +4,9 @@ import App from './App';
 import store from './store';
 import { Provider } from 'react-redux';
 
-// styles
+// Carbon chart css
 import 'carbon-components/css/carbon-components.min.css';
-import './scss/grid-layout.css';
-import './scss/grid-resize.css';
-import './scss/index.scss';
+import './scss/styles.scss';
 
 ReactDOM.render(
   <Provider store={store}>

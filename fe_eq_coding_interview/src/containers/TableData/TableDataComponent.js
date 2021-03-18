@@ -12,7 +12,6 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from 'carbon-components-react';
-import 'carbon-components/css/carbon-components.min.css';
 const TableDataComponent = ({ rowData, headerData }) => {
   const [highLight, sethighLight] = useState([]);
 

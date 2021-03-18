@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getPoiApi } from '../api/getPoiApi';
+import { getPoiApi } from '../../api/getPoiApi';
 
 export const getPoi = createAsyncThunk('/poi', async () => {
   return getPoiApi();

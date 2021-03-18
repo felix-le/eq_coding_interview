@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getStatsHourlyApi, getStatsDailyApi } from '../api/getStats';
+import { getStatsHourlyApi, getStatsDailyApi } from '../../api/getStats';
 import dayjs from 'dayjs';
 export const getSHourly = createAsyncThunk('/stats/hourly', () => {
   return getStatsHourlyApi();
