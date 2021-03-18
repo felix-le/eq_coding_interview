@@ -17,7 +17,7 @@ const headerDataTable = [
     header: 'Name',
   },
   {
-    key: 'status',
+    key: 'Status',
     header: 'Status',
   },
   {
@@ -25,7 +25,7 @@ const headerDataTable = [
     header: 'CTR (%)',
   },
   {
-    key: 'type',
+    key: 'Type',
     header: 'Campaign Type',
   },
   {
@@ -41,11 +41,11 @@ const headerDataTable = [
     header: 'Impressions',
   },
   {
-    key: 'avgCPC',
+    key: 'AvgCPC',
     header: 'AvgCPC',
   },
   {
-    key: 'avgCPV',
+    key: 'AvgCPV',
     header: 'AvgCPV',
   },
   {
@@ -54,6 +54,10 @@ const headerDataTable = [
   },
 ];
 const DashboardData = ({ stackedAreaChart, tableData, mapChartData }) => {
+  console.log(
+    '🚀 ~ file: DashboardData.js ~ line 57 ~ DashboardData ~ tableData',
+    tableData
+  );
   const [newTableData, setNewTableData] = useState([]);
 
   const optionStackedAreaChart = {
