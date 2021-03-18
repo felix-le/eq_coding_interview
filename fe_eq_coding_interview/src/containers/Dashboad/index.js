@@ -6,7 +6,6 @@ import { combineFn } from '../../helpers/';
 import { getEHourly, getEDaily } from '../../store/slices/events';
 import { getSHourly, getSDaily } from '../../store/slices/stats';
 import { getPoi } from '../../store/slices/poi';
-import { updateFormalData } from '../../store/slices/formatData';
 // Import components
 import DashboardData from './DashboardData';
 
@@ -20,6 +19,7 @@ const mapState = (state) => ({
 
 const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
   const [tableData, setTableData] = useState([]);
+  const [mapChartData, setMapChartData] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -53,12 +53,7 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
         };
         return newNumberObj;
       });
-      console.log(
-        '🚀 ~ file: index.js ~ line 56 ~ numberObj ~ numberObj',
-        numberObj
-      );
-
-      // dispatch(updateFormalData(numberObj));
+      setMapChartData(numberObj);
       setTableData(newObj);
     }
     combineArr();
@@ -71,7 +66,13 @@ const Dashboard = ({ eDaily, eHourly, poi, sDaily, sHourly }) => {
     dispatch(getSHourly());
     dispatch(getSDaily());
   }, [dispatch]);
-  return <DashboardData stackedAreaChart={eHourly} tableData={tableData} />;
+  return (
+    <DashboardData
+      stackedAreaChart={eHourly}
+      tableData={tableData}
+      mapChartData={mapChartData}
+    />
+  );
 };
 
 export default connect(mapState, null)(Dashboard);

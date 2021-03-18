@@ -1,38 +1,90 @@
-import React, { useState, useRef } from 'react';
-import ReactMapGL, { Marker, FlyToInterpolator } from 'react-map-gl';
+import React, { useState, useRef, useEffect } from 'react';
+import GoogleMapReact from 'google-map-react';
+import { FaBuilding } from 'react-icons/fa';
+import useSupercluster from 'use-supercluster';
+const Marker = ({ children }) => children;
 
 const MapChart3 = ({ data }) => {
-  // init setup
-
-  const [viewport, setViewport] = useState({
-    lattitude: 43.653225,
-    longtitude: -79.383186,
-    width: '100vw',
-    height: '100vh',
-    zoom: 12,
-  });
-
   const mapRef = useRef();
+  const [zoom, setZoom] = useState(10);
+  const [bounds, setBounds] = useState(null);
 
-  // Load data
-  console.log('🚀 ~ file: MapChart2.js ~ line 8 ~ MapChart ~ data', data);
-  // const optMetrics = [
-  //   'impressions',
-  //   'clicks',
-  //   'revenue',
-  //   'CTR',
-  //   'avgCPC',
-  //   'avgCPV',
-  // ];
+  const [dataMap, setDataMap] = useState([]);
+
+  // load and format data
+  function formatData(inputData) {
+    let data = [...inputData];
+    let newFormatData = [];
+    if (data.length > 0) {
+      data.map((item) => {
+        const newData = {
+          ...item,
+          type: 'Place',
+          properties: {
+            category: item.type,
+            cluster: false,
+          },
+          geometry: { type: 'Point', coordinates: [item.lon, item.lat] },
+        };
+        newFormatData.push(newData);
+      });
+    }
+    return newFormatData;
+  }
+  useEffect(() => {
+    setDataMap(formatData(data));
+  }, [data]);
+
+  // get clusters
+  const { clusters } = useSupercluster({
+    points: dataMap,
+    bounds,
+    zoom,
+    options: { radius: 75, maxZoom: 20 },
+  });
+  console.log(
+    '🚀 ~ file: MapChart3.js ~ line 40 ~ MapChart3 ~ clusters',
+    clusters
+  );
 
   return (
-    <ReactMapGL
-      {...viewport}
-      maxZoom={20}
-      mapboxApiAccessToken={
-        'pk.eyJ1IjoiZmVsaXhsZSIsImEiOiJja21kd2xha2EwcXA2MnVuOGN5NXg5dWlhIn0.EjtGCEHnFnuYzwnSg5oEzA'
-      }
-    ></ReactMapGL>
+    <div style={{ height: '100vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: process.env.REACT_APP_MAPBOX_TOKEN }}
+        defaultCenter={{ lat: 43.653225, lng: -79.383186 }}
+        defaultZoom={10}
+        yesIWantToUseGoogleMapApiInternals
+        onGoogleApiLoaded={({ map }) => {
+          mapRef.current = map;
+        }}
+        onChange={({ zoom, bounds }) => {
+          console.log(
+            '🚀 ~ file: MapChart3.js ~ line 73 ~ MapChart3 ~  zoom, bounds',
+            zoom,
+            bounds
+          );
+
+          // if (zoom !== undefined && bounds !== undefined) {
+          // }
+          // setZoom(zoom);
+          // setBounds([
+          //   bounds.nw.lng,
+          //   bounds.se.lat,
+          //   bounds.set.lng,
+          //   bounds.nw.lat,
+          // ]);
+        }}
+      >
+        {data.length > 0 &&
+          data.map((p) => (
+            <Marker key={p.poi_id} lat={p.lat} lng={p.lon}>
+              <div className='icon-wrapper'>
+                <FaBuilding />
+              </div>
+            </Marker>
+          ))}
+      </GoogleMapReact>
+    </div>
   );
 };
 

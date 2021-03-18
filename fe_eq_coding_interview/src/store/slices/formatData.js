@@ -11,7 +11,8 @@ const formalDataSlice = createSlice({
   },
   extraReducers: {
     [updateFormalData.fulfilled]: (state, action) => {
-      state.formalData = action;
+      // console.log('🚀 ~ file: formatData.js ~ line 14 ~ action', action);
+      state.formalData = action.payload;
     },
   },
 });

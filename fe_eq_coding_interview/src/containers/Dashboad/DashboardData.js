@@ -3,7 +3,14 @@ import TableDataComponent from '../TableData';
 import ChartStackedArea from '../ChartStackedArea';
 import 'carbon-components/css/carbon-components.min.css';
 import '@carbon/charts/styles.css';
-import { Button } from 'carbon-components-react';
+import {
+  Header,
+  HeaderName,
+  HeaderNavigation,
+  HeaderMenuItem,
+} from 'carbon-components-react/lib/components/UIShell';
+import MapChart from '../MapChart';
+
 const headerDataTable = [
   {
     key: 'name',
@@ -46,7 +53,7 @@ const headerDataTable = [
     header: 'Revenue (B)',
   },
 ];
-const DashboardData = ({ stackedAreaChart, tableData }) => {
+const DashboardData = ({ stackedAreaChart, tableData, mapChartData }) => {
   const [newTableData, setNewTableData] = useState([]);
 
   const optionStackedAreaChart = {
@@ -75,28 +82,40 @@ const DashboardData = ({ stackedAreaChart, tableData }) => {
   }, [tableData]);
 
   return (
-    <div style={{ marginTop: '200px' }}>
-      <div className='chartStacked_wrapper'>
-        <ChartStackedArea
-          data={stackedAreaChart}
-          options={optionStackedAreaChart}
-        />
-      </div>
-
-      <div className='dataTable_wrapper'>
-        {newTableData.length > 0 && (
-          <TableDataComponent
-            rowData={newTableData}
-            headerData={headerDataTable}
+    <>
+      <Header aria-label='Felix Le'>
+        <HeaderName href='/' prefix='Felix Le'>
+          EQ Works - Work Sample
+        </HeaderName>
+        <HeaderNavigation aria-label='Felix Le'>
+          <HeaderMenuItem href='#Dashboard'>Dashboard</HeaderMenuItem>
+          <HeaderMenuItem href='#mapchart'>DataChart</HeaderMenuItem>
+        </HeaderNavigation>
+      </Header>
+      <div
+        // style={{ marginTop: '200px' }}
+        id='ChartStakedArea'
+      >
+        {/* <div className='chartStacked_wrapper'>
+          <ChartStackedArea
+            data={stackedAreaChart}
+            options={optionStackedAreaChart}
           />
-        )}
-      </div>
+        </div>
 
-      <div className='opt_poi__wrapper'>
-        <h3 className='title'>Please click for viewing Map Chart</h3>
-        <Button href='/mapchart'>Show Map Chart</Button>
+        <div className='dataTable_wrapper'>
+          {newTableData.length > 0 && (
+            <TableDataComponent
+              rowData={newTableData}
+              headerData={headerDataTable}
+            />
+          )}
+        </div> */}
       </div>
-    </div>
+      <div className='opt_poi__wrapper' id='mapChart'>
+        <MapChart data={mapChartData} />
+      </div>
+    </>
   );
 };
 
